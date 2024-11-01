@@ -1,0 +1,308 @@
+{
+    "SwiftMovePage": {
+        "Header": {
+            "links": {
+                "link1": "Home",
+                "link2": "How it works",
+                "link3": "Plans",
+                "link4": "Advantages"
+            },
+            "button1 text": "Sign up",
+            "button2 text": "Invest now"
+        },
+        "HeroSection": {
+            "tag": "Fast on the road, profitable in your pocket",
+            "heading": "Invest in the future of eco-friendly delivery and watch your earnings grow.",
+            "subheading": "Become part of an innovative and profitable project in the modern logistics sector.",
+            "button text": "Invest now"
+        },
+        "WhyUsSection": {
+            "tag": "Why invest in SwiftMove",
+            "heading": "Why is SwiftMove the best choice for your investments?",
+            "card1": {
+                "title": "Sustainable growth",
+                "body": "SwiftMove reduces its carbon footprint with eco-responsible vehicles and optimized routes."
+            },
+            "card2": {
+                "title": "Rapid return on investment",
+                "body": "Maximize profitability right from the start with reduced costs and optimum efficiency."
+            },
+            "card3": {
+                "title": "Environmental impact",
+                "body": "SwiftMove minimizes its ecological impact by adopting clean and efficient transport solutions."
+            },
+            "chart": {
+                "title": "Potential earnings growth",
+                "lang": "en"
+            }
+        },
+        "HowItWorksSection": {
+            "heading": "How it works",
+            "subheading": "Follow these simple steps.",
+            "card1": {
+                "title": "Choose your vehicle",
+                "body": "Select the delivery method you wish to invest in."
+            },
+            "card2": {
+                "title": "Investissez en quelques clics",
+                "body": "Quick and easy process, secured by our payment partners."
+            },
+            "card3": {
+                "title": "Generate profits",
+                "body": "See your profits grow thanks to our high-performance delivery network."
+            }
+        },
+        "OpportunitiesSection": {
+            "heading": "Choose your investment plan",
+            "subheading": "Flexible investment options to maximize your profits",
+            "card1": {
+                "title": "Bike",
+                "description": "Invest in fast, green delivery.",
+                "price": "7$",
+                "duration": "6 months",
+                "investmentSentence": "Investment of <span>{price}</span> <br></br> for <span>{duration}</span>",
+                "advantages": {
+                    "incomePercentage": "250%",
+                    "return on investment": "Return on investment of <span>{incomePercentage}</span>"
+                }
+            },
+            "card2": {
+                "title": "Motorcycle",
+                "description": "Boost your profits with urban mobility.",
+                "price": "25$",
+                "duration": "6 months",
+                "investmentSentence": "Investment of <span>{price}</span> <br></br> for <span>{duration}</span>",
+                "advantages": {
+                    "incomePercentage": "250%",
+                    "return on investment": "Return on investment of <span>{incomePercentage}</span>"
+                }
+            },
+            "card3": {
+                "title": "Eco Motorcycle",
+                "description": "Combine speed and respect for the environment with low-impact solutions.",
+                "price": "50$",
+                "duration": "6 months",
+                "investmentSentence": "Investment of <span>{price}</span> <br></br> for <span>{duration}</span>",
+                "advantages": {
+                    "incomePercentage": "225%",
+                    "return on investment": "Return on investment of <span>{incomePercentage}</span>"
+                }
+            },
+            "card4": {
+                "title": "Car",
+                "description": "Ensure comfortable and safe deliveries, whatever the journey.",
+                "price": "110$",
+                "duration": "9 months",
+                "investmentSentence": "Investment of <span>{price}</span> <br></br> for <span>{duration}</span>",
+                "advantages": {
+                    "incomePercentage": "230%",
+                    "return on investment": "Return on investment of <span>{incomePercentage}</span>"
+                }
+            },
+            "card5": {
+                "title": "Eco Car",
+                "description": "Reduce your carbon footprint while maintaining the flexibility of the road.",
+                "price": "250$",
+                "duration": "10 months",
+                "investmentSentence": "Investment of <span>{price}</span> <br></br> for <span>{duration}</span>",
+                "advantages": {
+                    "incomePercentage": "230%",
+                    "return on investment": "Return on investment of <span>{incomePercentage}</span>"
+                }
+            },
+            "card6": {
+                "title": "Train",
+                "description": "Count on reliable, sustainable delivery thanks to rail transport.",
+                "price": "450$",
+                "duration": " 15 months",
+                "investmentSentence": "Investment of <span>{price}</span> <br></br> for <span>{duration}</span>",
+                "advantages": {
+                    "incomePercentage": "260%",
+                    "return on investment": "Return on investment of <span>{incomePercentage}</span>"
+                }
+            },
+            "card7": {
+                "title": "Boat",
+                "description": "Choose an economical and ecological solution for your long-distance deliveries.",
+                "price": "250$",
+                "duration": "19 months",
+                "investmentSentence": "Investment of <span>{price}</span> <br></br> for <span>{duration}</span>",
+                "advantages": {
+                    "incomePercentage": "270%",
+                    "return on investment": "Return on investment of <span>{incomePercentage}</span>"
+                }
+            }
+        },
+        "AdvantagesSection": {
+            "heading": "SwiftMove benefits",
+            "subheading": "Here's what we have to offer.",
+            "card1": {
+                "title": "Rapid growth in investments"
+            },
+            "card2": {
+                "title": "Flexible returns on investment"
+            },
+            "card3": {
+                "title": "Eco-responsible delivery and green technology"
+            },
+            "card4": {
+                "title": "Fund security and transparency"
+            },
+            "chart": {
+                "title": "Financial results",
+                "lang": "en"
+            }
+        },
+        "TestimonySection": {
+            "heading": "Listen to their opinions",
+            "subheading": "They talk about what SwiftMove has been able to offer them.",
+            "card1": {
+                "name": "John Doe",
+                "testimony": "Thanks to SwiftMove, I've seen my investment grow by 10% in just 6 months! The sustainable delivery model is the future."
+            },
+            "card2": {
+                "name": "Jane Smith",
+                "testimony": "SwiftMove has saved me time and money. Their service is fast and eco-friendly, and I'm impressed with their efficiency!"
+            },
+            "card3": {
+                "name": "Lucas Martin",
+                "testimony": "I've never seen a company so committed to the environment and its customers. With SwiftMove, I've optimized my logistics while reducing my carbon footprint."
+            },
+            "card4": {
+                "name": "Emma Durand",
+                "testimony": "The service is impeccable! In just a few months, I've seen a significant improvement in my sales thanks to their innovative delivery model."
+            },
+            "card5": {
+                "name": "Noah Lefebvre",
+                "testimony": "SwiftMove has totally transformed the way I manage my shipments. Not only is it fast, it's also good for the planet. A winning service on every level!"
+            }
+        },
+        "Footer": {
+            "col1": {
+                "title": "Useful links",
+                "link1": "Invest",
+                "link2": "How it works",
+                "link3": "Plans",
+                "link4": "Advantages"
+            },
+            "col2": {
+                "title": "Resources",
+                "link1": {
+                    "title": "Terms of use",
+                    "dialog": {
+                        "intro": "Welcome to SwiftMove. By using our site and services, you agree to be bound by these Terms of Use (“Terms”). Please read them carefully before using our services.",
+                        "1": {
+                            "title": "1. Acceptance of Conditions",
+                            "description": "By accessing our website, registering or using our delivery and investment services, you fully accept these Terms. If you do not agree to these Terms, you must stop using our services immediately."
+                        },
+                        "2": {
+                            "title": "2. Description of Services",
+                            "description": "<b>SwiftMove</b> is a delivery company offering logistics services via bicycles, motorcycles, cars and trucks, as well as an investment platform enabling users to invest in our development project. We are committed to providing a reliable, safe and environmentally friendly service."
+                        },
+                        "3": {
+                            "title": "3. User account",
+                            "description": "• <b>Account creation</b>: To access certain services, you must create an account by providing accurate and complete information (name, email, password). <br></br> • <b>Account Responsibility</b>: You are responsible for the security of your login credentials. Any activity carried out via your account is attributed to you. Notify us immediately if your login information is compromised. <br></br> • <b>Account Termination</b>: We reserve the right to suspend or terminate any account for violation of these Terms or fraudulent activity."
+                        },
+                        "4": {
+                            "title": "4. Investment",
+                            "description": "<b>SwiftMove</b> offers an investment platform open to all adults wishing to participate in our project. By investing in SwiftMove: <br></br> • <b>Risks</b>: You acknowledge that any investment involves a financial risk. SwiftMove does not guarantee fixed or secure returns. <br></br> • <b>Transparency</b>: We undertake to provide regular information on the company's performance and the use of the funds invested. <br></br> • <b>Investment conditions</b>: Minimum amounts, withdrawal terms and other specific financial details are specified on our dedicated investment page."
+                        },
+                        "5": {
+                            "title": "5. Use of Delivery Services",
+                            "description": "• <b>Availability of Services</b>: Our delivery services are available in the areas specified on our site. Delivery times may vary according to region and mode of transport. <br></br> • <b>Obligations of Users</b>: You must provide accurate and complete information for all delivery orders. You are responsible for the correct reception of the parcels sent. <br></br> • <b>Refund Policy</b>: Refunds and compensation for late or incorrect delivery will be considered on a case-by-case basis."
+                        },
+                        "6": {
+                            "title": "6. Rates and payments",
+                            "description": "• <b>Rates</b>: The rates for our delivery services are shown on our website and may vary according to the type of transport and destination. Investment costs and other charges related to financial participation will also be clearly indicated before any commitment. <br></br> • <b>Payment methods</b>: We accept payment by credit card, bank transfer, and any other payment method specified on the site. <br></br> • <b>Late payment and non-payment</b>: Any non-payment may result in suspension of your services until the situation is remedied."
+                        },
+                        "7": {
+                            "title": "7. Intellectual Property",
+                            "description": "All content on the site (text, images, logos, graphics, etc.) is the property of <b>SwiftMove</b> or its partners. Any unauthorized reproduction, modification or distribution is strictly prohibited."
+                        },
+                        "8": {
+                            "title": "8. Limitation of liability",
+                            "description": "• <b>Availability</b>: We strive to keep our site and services accessible at all times, but do not guarantee continuous availability. <br></br> • <b>Liability</b>: SwiftMove is not liable for financial loss, indirect or consequential damages arising from the use of our services, except in cases of gross negligence or intent."
+                        },
+                        "9": {
+                            "title": "9. Privacy Policy",
+                            "description": "The protection of your personal data is important to us. We process your data in accordance with our <b>Privacy Policy</b>, which is available on our website. By using our services, you consent to the collection and use of your data as set out in this policy."
+                        },
+                        "10": {
+                            "title": "10. Modifications to the Conditions",
+                            "description": "SwiftMove reserves the right to modify or update these Terms at any time. Users will be notified of any significant changes by e-mail or via a notice on the site. Continued use of the services after modification constitutes acceptance of the new Terms."
+                        },
+                        "11": {
+                            "title": "11. Cancellation",
+                            "description": "We reserve the right to terminate or suspend your access to our services in the event of non-compliance with these Terms, or for any other reason deemed necessary."
+                        },
+                        "12": {
+                            "title": "12. Applicable law and jurisdiction",
+                            "description": "These Conditions are governed by the laws of the country in which SwiftMove is based. In the event of a dispute, the competent courts will be those of the jurisdiction of SwiftMove's registered office."
+                        },
+                        "13": {
+                            "title": "13. Contact",
+                            "description": "If you have any questions about these Terms or would like further information, please contact us at the following address: <br></br> • <b>Email</b>: support@swiftmove.com <br></br> • <b>Phone</b>: +[phone number]"
+                        },
+                        "conclusion1": "By using the <b>SwiftMove</b> services, you acknowledge that you have read, understood and accepted these Terms and Conditions of Use.",
+                        "conclusion2": "This ensures legal protection for the company, while remaining transparent to users and investors."
+                    }
+                },
+                "link2": {
+                    "title": "Privacy policy",
+                    "dialog": {
+                        "intro": "<b>Effective date</b>: [insert date] <br></br><br></br> At <b>SwiftMove</b>, the privacy and security of your personal information is of the utmost importance. This Privacy Policy describes the types of information we collect, how we use it, the steps we take to protect it, and your rights regarding your personal data.",
+                        "1": {
+                            "title": "1. Information collected",
+                            "description": "We collect several types of data to provide and improve our services: <br></br> • <b>Personal Data</b>: When you register or use our services, we collect information such as your name, e-mail address, telephone number, delivery address, and payment information. <br></br> • <b>Browsing Data</b>: We collect technical information such as IP address, browser type, pages visited, cookies, and access time to improve your user experience. <br></br> • <b>Financial Data</b>: If you invest in our project, we collect information relating to your financial transactions (amount invested, means of payment, etc.)."
+                        },
+                        "2": {
+                            "title": "2. Use of Information",
+                            "description": "The information we collect is used for : <br></br> • <b>Service Provision</b>: To manage and process your delivery orders and investment transactions; <br></br> • <b>Service Improvement</b>: To analyze browsing data to improve our site, optimize our delivery services, and develop new features. <br></br> • <b>Communication</b>: To inform you about our services, promotions, news, or to answer your questions. <br></br> • <b>Investment Management</b>: To keep your investment information up to date, calculate returns, and manage financial transactions. <br></br> • <b>Security</b>: Protect our platform against fraud and abuse, and ensure the security of your personal information."
+                        },
+                        "3": {
+                            "title": "3. Information sharing",
+                            "description": "Your personal data may be shared in the following cases: <br></br> • <b>Service Partners</b>: We share certain information with delivery partners, payment providers, and technology suppliers in order to process your orders or investments. <br></br> • <b>Legal Compliance</b>: We may disclose information if required to do so by law, in connection with legal proceedings, or to protect our rights or those of our users. <br></br> • <b>Transfer of Business</b>: In the event of a merger, acquisition, or sale of all or part of our business, your information may be transferred to the new owners. <br></br> We do not sell or rent your personal data to third parties for marketing purposes."
+                        },
+                        "4": {
+                            "title": "4. Cookies and Tracking Technologies",
+                            "description": "We use <b>cookies</b> and similar technologies to improve the user experience and gather analytical information. These technologies help us to: <br></br> • <b>Improve Navigation</b>: Remember your preferences and choices to provide a more personalized experience. <br></br> • <b>Analyze Performance</b>: Track site performance and understand how users interact with our services. <br></br> You can set your browser to refuse cookies, but this may limit certain features of our site."
+                        },
+                        "5": {
+                            "title": "5. Data security",
+                            "description": "We implement rigorous technical and organizational security measures to protect your personal data against unauthorized access, loss, destruction or alteration. This includes the use of encryption protocols for online transactions and database protection. <br></br> However, no method of transmission over the Internet or of electronic storage is totally secure. Although we strive to protect your data, we cannot guarantee absolute security."
+                        },
+                        "6": {
+                            "title": "6. Your rights",
+                            "description": "As a SwiftMove user, you have the following rights regarding your personal data: <br></br> • <b>Access</b>: You have the right to request a copy of the information we hold about you. <br></br> • <b>Correction</b>: You may request that we correct or update your information if it is inaccurate or out of date. <br></br> • <b>Deletion</b>: You may request the deletion of your personal data, unless its retention is necessary for legal or contractual reasons. <br></br> • <b>Portability</b>: In certain cases, you have the right to receive your data in a structured and commonly used format, and to transfer it to another service provider. <br></br> • <b>Objection</b>: You may object to the processing of your data for legitimate reasons, in particular with regard to marketing communications. <br></br> To exercise these rights, please contact us at <b>privacy@swiftmove.com</b>."
+                        },
+                        "7": {
+                            "title": "7. Data retention",
+                            "description": "We retain your personal data for as long as necessary to fulfill the purposes described in this Policy, including providing our services, complying with our legal obligations, resolving disputes, and enforcing our agreements."
+                        },
+                        "8": {
+                            "title": "8. Changes to the Privacy Policy",
+                            "description": "We may update this Privacy Policy periodically to reflect changes in our practices. We will notify you of any significant changes by e-mail or via a notice on our site. We encourage you to visit this page regularly to stay informed about our privacy practices."
+                        },
+                        "9": {
+                            "title": "9. Contact",
+                            "description": "If you have any questions or concerns about this Privacy Policy, or if you would like to exercise your rights regarding your personal data, please contact us at: <br></br> • <b>Email</b>: privacy@swiftmove.com <br></br> • <b>Phone</b>: +[phone number]"
+                        },
+                        "conclusion1": "By using <b>SwiftMove</b> services, you consent to the collection and use of your information in accordance with this Privacy Policy.",
+                        "conclusion2": "This guarantees your users and investors transparency in the management of their personal data, and reinforces trust in the company."
+                    }
+                },
+                "link3": {
+                    "title": "About us",
+                    "dialog": {
+                        "1": "At <b>SwiftMove</b>, we're redefining modern delivery while offering a unique investment opportunity. Founded with the vision of making deliveries faster, greener and more accessible, we've created a diverse transportation network, including bikes, motorcycles, cars and trucks. Our mission is to provide delivery solutions tailored to the needs of individuals and businesses, while minimizing our carbon footprint. <br></br> Alongside our logistics services, SwiftMove offers you an investment opportunity in a fast-growing sector. The boom in e-commerce and the growing demand for fast deliveries put us in an ideal position to grow rapidly. By joining our project, you're investing in an agile, innovative company committed to a sustainable future. <br></br> Our values are simple: <br></br> • <b>Innovation</b>: We use the latest technologies to optimize routes, reduce delivery times and improve efficiency. <br></br> • <b>Ecology</b>: We favor green means of transport, such as electric bikes and motorcycles, to reduce environmental impact. <br></br> • <b>Profitability</b>: Thanks to efficient management and a solid business model, we offer investors attractive, sustainable returns. <br></br> Whether you're a user of our services or an investor looking for growth opportunities, <b>SwiftMove</b> invites you to be part of this adventure. Let's build the future of logistics together."
+                    }
+                }
+            },
+            "col3": {
+                "title": "Contact",
+                "link1": "infos@swiftmove.com",
+                "link2": "+0000000000"
+            }
+        }
+    }
+}
