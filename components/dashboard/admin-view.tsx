@@ -20,29 +20,7 @@ import UserRequests from '../admin/tabs/request';
 import Vehicles from '../admin/tabs/vehicles';
 import Plans from "../admin/tabs/plans";
 
-const pendingRequests = [
-    {
-        id: 1,
-        type: "Dépôt",
-        amount: 5000,
-        user: "Alice Johnson",
-        status: "En attente",
-    },
-    {
-        id: 2,
-        type: "Retrait",
-        amount: 2000,
-        user: "Bob Smith",
-        status: "En attente",
-    },
-    {
-        id: 3,
-        type: "Dépôt",
-        amount: 3000,
-        user: "Charlie Brown",
-        status: "En attente",
-    },
-];
+
 
 
 
@@ -73,7 +51,7 @@ export default function AdminDashboard() {
 
                     {activeTab === "investors" && <Investor  />}
 
-                    {activeTab === "requests" && <UserRequests pendingRequests={pendingRequests} />}
+                    {activeTab === "requests" && <UserRequests  />}
 
                     {activeTab === "vehicles" && <Vehicles />}
 
