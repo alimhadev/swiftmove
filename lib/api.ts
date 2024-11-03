@@ -52,5 +52,9 @@ export const SubmitWithdrawalRequest = (payload: any): Promise<any> => apiClient
 export const subscribeToPlan = (payload: { investmentPlanId: number }): Promise<String> => apiClient(`/subscribtion-for-user`, 'POST', payload);
 
 export const userIncrease = (): Promise<Investment[]> => apiClient(`/user-increases`);
-export const getUserActivePlans = (): Promise<ActiveUserInvestment[]> => apiClient<ActiveUserInvestment[]>('/user-plans');
+export const getUserActivePlans = (): Promise<ActiveUserInvestment[]> => apiClient<ActiveUserInvestment[]>('/user-subscribtion-plans');
 export const getTotalInvestments = (): Promise<number> => apiClient<number>('/total-investments');
+
+export const getWithdrawalRequests = (): Promise<Withdrawal[]> => apiClient<Withdrawal[]>('/withdrawals');
+
+export const approveWithdrawal = (id: number): Promise<any> => apiClient(`/validate-withdrawal/${id}`, 'POST'); 

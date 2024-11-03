@@ -82,6 +82,7 @@ const Dashboard = ({ setActiveTab,}: { setActiveTab: React.Dispatch<React.SetSta
     const { toast } = useToast()
     const { data: userIncreases } = useQuery({ queryKey: ['increase'], queryFn: userIncrease })
     const { data: userActivePlans,  } = useQuery({ queryKey: ['userActivePlans'], queryFn: getUserActivePlans })
+    console.log("userActivePlans", userActivePlans)
     const queryClient = useQueryClient()
     const subscribeMutation = useMutation({
         mutationFn: subscribeToPlan,

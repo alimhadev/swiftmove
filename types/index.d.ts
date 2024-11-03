@@ -136,3 +136,19 @@ interface Deposit {
     updated: null | CreatedBy;
 }  
 
+interface Withdrawal {
+    id: number;
+    amount: string;
+    method: string;
+    cost: string;
+    userId: number;
+    createdAt: string;
+    updatedAt: string;
+    phoneNumber: string;
+    createdBy: number;
+    updatedBy: number | null;
+    isValidated: boolean;
+    user: User;
+    updated: null | CreatedBy;
+    created: CreatedBy;
+  }
