@@ -13,16 +13,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { useQuery } from '@tanstack/react-query';
+import { getUsers } from '@/lib/api';
 
-interface IInvestor {
-    id: number;
-    name: string;
-    email: string;
-    totalInvestment: number;
-    activeInvestments: number;
 
-}
-const Investor = ({investors}: { investors: IInvestor[] }) => {
+const Investor = () => {
+    const { data: users, } = useQuery({ queryKey: ['investmentPlans'], queryFn: getUsers })
     return (
         <Card>
             <CardHeader>
@@ -35,26 +31,26 @@ const Investor = ({investors}: { investors: IInvestor[] }) => {
                             <TableHead>Nom</TableHead>
                             <TableHead>Email</TableHead>
                             <TableHead>Total investi</TableHead>
-                            <TableHead>
+                            {/* <TableHead>
                                 Investissements actifs
-                            </TableHead>
+                            </TableHead> */}
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {investors.map((investor) => (
+                        {users?.map((investor) => (
                             <TableRow key={investor.id}>
                                 <TableCell>
-                                    {investor.name}
+                                    {investor.lastname} {investor.firstname}
                                 </TableCell>
                                 <TableCell>
                                     {investor.email}
                                 </TableCell>
                                 <TableCell>
-                                    ${investor.totalInvestment}
+                                    ${investor.totalInvestments}
                                 </TableCell>
-                                <TableCell>
-                                    {investor.activeInvestments}
-                                </TableCell>
+                                {/* <TableCell>
+                                    {investor.}
+                                </TableCell> */}
                             </TableRow>
                         ))}
                     </TableBody>

@@ -19,17 +19,17 @@ export const apiClient = async <T>(endpoint: string, method: string = "GET", bod
         const response = await fetch(`${serverUrl}${endpoint}`, {
             method,
             headers,
-            body: body? isFormData ? body : JSON.stringify(body) : null
+            body: body ? isFormData ? body : JSON.stringify(body) : null
         });
 
         if (!response.ok) {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
+            const responseJson = await response.json()
+            throw new Error(`Erreur ${response.status}: ${responseJson.message}`)
         }
-
         return await response.json();
     } catch (error: any) {
-        console.log(error)
-        throw new Error(`Error sending request: ${error.message}`);
+        console.log("Error sending request:", error)
+        throw new Error(`${error.message}`);
     }
 };
 
@@ -45,6 +45,12 @@ export const getInvestmentPlans = (): Promise<InvestmentPlan[]> => apiClient<Inv
 export const createInvestmentPlan = (payload: Omit<InvestmentPlan, 'id' | 'created_at' | 'updated_at'>): Promise<String> => apiClient('/investment_plans', 'POST', payload);
 export const updateInvestmentPlan = (payload: InvestmentPlan): Promise<String> => apiClient(`/investment_plans/${payload.id}`, 'PUT', payload);
 export const deleteInvestmentPlan = (id: string): Promise<String> => apiClient(`/investment_plans/${id}`, 'DELETE');
-export const getDepositRequests = (): Promise<DepositRequest[]> => apiClient<DepositRequest[]>('/deposits');
-export const SubmitDepositRequest = (payload: any): Promise<any> => apiClient('/deposits/by-user', 'POST', payload, true);
-export const SubmitWithdrawalRequest = (payload: any): Promise<any> => apiClient('/withdrawals/by-user', 'POST', payload, );
+export const getDepositRequests = (): Promise<Deposit[]> => apiClient<Deposit[]>('/deposits');
+export const approveDeposit = (id: number): Promise<any> => apiClient(`/validate-deposit/${id}`, 'POST');
+export const SubmitDepositRequest = (payload: any): Promise<any> => apiClient('/deposit-for-user', 'POST', payload, true);
+export const SubmitWithdrawalRequest = (payload: any): Promise<any> => apiClient('/withdrawal-for-user', 'POST', payload,);
+export const subscribeToPlan = (payload: { investmentPlanId: number }): Promise<String> => apiClient(`/subscribtion-for-user`, 'POST', payload);
+
+export const userIncrease = (): Promise<Investment[]> => apiClient(`/user-increases`);
+export const getUserActivePlans = (): Promise<ActiveUserInvestment[]> => apiClient<ActiveUserInvestment[]>('/user-plans');
+export const getTotalInvestments = (): Promise<number> => apiClient<number>('/total-investments');

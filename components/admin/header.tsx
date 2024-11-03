@@ -15,7 +15,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, LogOut, Menu, User } from 'lucide-react';
 import Link from 'next/link';
 import LogoutButton from '../dashboard/logout-button';
-const Header = ({ setActiveTab, activeTab, setShowNotifications, showNotifications, user }: { setActiveTab: React.Dispatch<React.SetStateAction<string>>, activeTab: string, setShowNotifications: React.Dispatch<React.SetStateAction<boolean>>, showNotifications: boolean, user?: User }) => {
+import { useAppContext } from '@/hooks/appProvider';
+const Header = ({ setActiveTab, activeTab, }: { setActiveTab: React.Dispatch<React.SetStateAction<string>>, activeTab: string, }) => {
+    const notifications = [
+        { id: 1, message: "Nouveau rendement disponible", date: "2024-03-11" },
+        { id: 2, message: "Mise à jour de votre plan", date: "2024-03-10" },
+        { id: 3, message: "Promotion sur les nouveaux plans", date: "2024-03-09" },
+    ]
+    const { user } = useAppContext()
     return (
         <header className="bg-white shadow-md p-4 flex justify-between items-center">
             <div className="flex items-center">
@@ -39,13 +46,31 @@ const Header = ({ setActiveTab, activeTab, setShowNotifications, showNotificatio
                 <h2 className="hidden sm:block text-2xl font-bold">Admin Dashboard</h2>
             </div>
             <div className="flex items-center space-x-4">
-                <Button
-                    variant="outline"
-                    onClick={() => setShowNotifications(!showNotifications)}
-                >
-                    <Bell className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Notifications</span>
-                </Button>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline">
+                            <Bell className="h-4 w-4 sm:mr-2" />
+                            <span className="hidden sm:inline">Notifications</span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-80" align="end">
+                        <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        {notifications.map((notification) => (
+                            <DropdownMenuItem key={notification.id} className="flex flex-col items-start">
+                                <span className="font-medium">{notification.message}</span>
+                                <span className="text-sm text-muted-foreground">{notification.date}</span>
+                            </DropdownMenuItem>
+                        ))}
+                        {notifications.length === 0 && (
+                            <DropdownMenuItem disabled>Aucune notification</DropdownMenuItem>
+                        )}
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="text-center">
+                            <Link href="#" className="w-full text-center">Voir toutes les notifications</Link>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="relative h-8 w-8 rounded-full">

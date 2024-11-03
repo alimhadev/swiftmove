@@ -19,6 +19,7 @@ type User = {
     createdBy: string | null;
     updatedBy: string | null;
     isAdmin: boolean;
+    totalInvestments: number;
 }
 type InvestmentPlan = {
     id?: number;
@@ -29,6 +30,7 @@ type InvestmentPlan = {
     durationInDay: number;
     minimumWithdrawalAmount: number;
     vehicleId: string;
+    vehicle?: Vehicule;
     created_at?: Date
     updated_at?: Date
 }
@@ -48,25 +50,89 @@ type UserResponse = {
     token: Token;
 }
 
-type DepositRequest = {
+interface CreatedBy {
+    id: number
+    firstname: string
+    lastname: string
+}
+
+interface Deposit {
+    id: number
+    amount: string
+    method: string
+    userId: number
+    createdAt: string
+    updatedAt: string
+    isValidated: boolean
+    photo: string
+    createdBy: number
+    updatedBy: number | null
+    created: CreatedBy
+    user: User
+    updated: null | CreatedBy
+}
+
+
+interface Increase {
+    id: number;
+    amount: number;
+    subscribeId: number;
+    createdBy: number;
+    updatedBy: number;
+    createdAt: DateTime;
+    updatedAt: DateTime;
+    created: User;
+    updated: User;
+}
+type Investment = {
+    id: number;
+    state: string;
+    userId: number;
+    investmentPlanId: number;
+    createdAt: string;
+    updatedAt: string;
+    createdBy: number;
+    updatedBy: number | null;
+    lastActivity: string | null;
+    leftDays: number;
+    fakeMonths: number;
+    increases: Increase[];
+}
+
+
+interface ActiveUserInvestment {
+    id: number;
+    state: string;
+    userId: number;
+    investmentPlanId: number;
+    createdAt: string;
+    updatedAt: string;
+    createdBy: number;
+    updatedBy: number | null;
+    lastActivity: string | null;
+    leftDays: number;
+    fakeMonths: number;
+    investmentPlan: InvestmentPlan;
+}
+
+interface CreatedBy {
+    id: number;
+    firstname: string;
+    lastname: string;
+}
+interface Deposit {
     id: number;
     amount: string;
     method: string;
     userId: number;
     createdAt: string;
     updatedAt: string;
-    photo: string | null;
+    isValidated: boolean;
+    photo: string;
     createdBy: number;
     updatedBy: number | null;
+    created: CreatedBy;
     user: User;
-    created: {
-        id: number;
-        firstname: string;
-        lastname: string;
-    };
-    updated: null | {
-        id: number;
-        firstname: string;
-        lastname: string;
-    };
-}
+    updated: null | CreatedBy;
+}  
+

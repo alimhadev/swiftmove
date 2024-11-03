@@ -31,6 +31,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { useToast } from "@/hooks/use-toast"
 import { SubmitDepositRequest, SubmitWithdrawalRequest } from '@/lib/api';
 import { getServerUrl } from '@/lib/utils';
 const Transactions = ({ transactionHistory }: {
@@ -41,8 +42,8 @@ const Transactions = ({ transactionHistory }: {
         date: string;
     }[]
 }) => {
-
-    const [selectedDepositMethod, setSelectedDepositMethod] = useState<"MOOV" | "T-MONEY" | undefined>(undefined)
+    const { toast } = useToast()
+    const [selectedDepositMethod, setSelectedDepositMethod] = useState<"MOOV" | "T-MONEY" | "USDT" | undefined>(undefined)
     const [depositAmount, setDepositAmount] = useState<number>(0)
 
     const queryClient = useQueryClient()
@@ -51,13 +52,37 @@ const Transactions = ({ transactionHistory }: {
         mutationFn: SubmitDepositRequest,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['userDepositRequests'] })
-        }
+            toast({
+                title: "Dépôt effectué",
+                description: "Votre dépôt a bien été soumis et sera traité prochainement",
+                variant: "default",
+            })
+        },
+        onError(error, variables, context) {
+            toast({
+                title: "Erreur lors du dépôt",
+                description: error.message,
+                variant: "destructive",
+            })
+        },
     })
     const createWithdrawalMutation = useMutation({
         mutationFn: SubmitWithdrawalRequest,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['userDepositRequests'] })
-        }
+            toast({
+                title: "Demande de retrait effectuée",
+                description: "Votre demande de retrait a bien été effectuée et sera traitée prochainement",
+                variant: "default",
+            })
+        },
+        onError(error, variables, context) {
+            toast({
+                title: "Erreur lors de la demande de retrait",
+                description: error.message,
+                variant: "destructive",
+            })
+        },
     })
     const ACCEPTED_IMAGE_TYPES = [
         'image/jpeg',
@@ -65,11 +90,30 @@ const Transactions = ({ transactionHistory }: {
         'image/png',
         'image/webp',
     ]
+    type DepositMethod = "MOOV" | "T-MONEY" | "USDT"
 
-    const depositAddress = {
-        "MOOV": "94698745",
-        "T-MONEY": "94698745",
-    }
+    type DepositMethodInfo = {
+        method: DepositMethod;
+        message: (depositAmount?: number) => React.ReactNode;
+
+    };
+    const depositMethodInfo: DepositMethodInfo[] = [
+        {
+            message: (depositAmount) => <p>Veuillez effectuer le depot de <span className='font-bold'>{depositAmount} FCFA </span> en tapant le code  <span className='font-bold'>*145*5*${depositAmount}*34903#</span></p>,
+            method: "MOOV",
+        },
+        {
+            message: (depositAmount) => <p>Veuillez effectuer le depot de <span className='font-bold'>{depositAmount} FCFA </span> en tapant le code <span className='font-bold'>*145*5*${depositAmount}*34903#</span></p>,
+            method: "T-MONEY",
+        },
+        {
+            message: (depositAmount) => <p>
+                Veuillez envoyer <span className='font-bold'>{depositAmount} USDT </span> à l'adresse suivante : <span className='font-bold'>TB7j7UE1bU4QepLW96NE89BRB5se4vaWip</span>
+            </p>,
+            method: "USDT",
+        },
+    ]
+
     const MAX_FILE_SIZE = 2000000
     const imageSchema = z.instanceof(File)
         .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type), {
@@ -80,12 +124,12 @@ const Transactions = ({ transactionHistory }: {
         })
     const depositFormSchema = z.object({
         amount: z.number().min(0),
-        method: z.enum(['MOOV', 'T-MONEY']),
+        method: z.enum(['MOOV', 'T-MONEY', 'USDT']),
         photo: imageSchema
     })
     const withdrawalFormSchema = z.object({
         amount: z.number().min(0),
-        method: z.enum(['MOOV', 'T-MONEY']),
+        method: z.enum(['MOOV', 'T-MONEY', 'USDT']),
         phoneNumber: z.string().min(8),
         cost: z.number().min(0),
         userId: z.number().min(1),
@@ -97,7 +141,7 @@ const Transactions = ({ transactionHistory }: {
             amount: 0,
             phoneNumber: "0",
             cost: 0,
-            userId: 9,
+            userId: 5,
             isValitated: false,
 
         },
@@ -194,11 +238,12 @@ const Transactions = ({ transactionHistory }: {
                                                     </SelectTrigger>
                                                     <SelectContent>
 
-                                                        {["MOOV", "T-MONEY"].map((method) => (
-                                                            <SelectItem key={method} value={method}>
-                                                                {method}
-                                                            </SelectItem>
-                                                        ))}
+                                                        {
+                                                            depositMethodInfo.map((method) => (
+                                                                <SelectItem key={method.method} value={method.method}>
+                                                                    {method.method}
+                                                                </SelectItem>
+                                                            ))}
 
                                                     </SelectContent>
                                                 </Select>
@@ -213,7 +258,9 @@ const Transactions = ({ transactionHistory }: {
 
                                 {
                                     selectedDepositMethod && <>
-                                        <p>Veuillez effectuer le depot de <span className='font-bold'>{depositAmount} FCFA </span>sur le compte : <span className='font-bold'>{depositAddress[selectedDepositMethod]}</span></p>
+                                        {
+                                            depositMethodInfo.find(method => method.method === selectedDepositMethod)?.message(depositAmount)
+                                        }
                                         <p>
                                             Veuillez joindre une capture d'écran de la confirmation de votre dépôt.
                                         </p>
@@ -294,13 +341,12 @@ const Transactions = ({ transactionHistory }: {
                                                         <SelectValue placeholder="Sélectionnez une méthode de retrait" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-
-                                                        {["MOOV", "T-MONEY"].map((method) => (
-                                                            <SelectItem key={method} value={method}>
-                                                                {method}
-                                                            </SelectItem>
-                                                        ))}
-
+                                                        {
+                                                            depositMethodInfo.map((method) => (
+                                                                <SelectItem key={method.method} value={method.method}>
+                                                                    {method.method}
+                                                                </SelectItem>))
+                                                        }
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
@@ -323,7 +369,7 @@ const Transactions = ({ transactionHistory }: {
                                                     if (/^\d*$/.test(e.target.value)) {
                                                         field.onChange(e.target.value)
                                                     }
-                                                }}/>
+                                                }} />
                                             </FormControl>
                                             <FormDescription>
                                                 Une capture d'écran de la confirmation de votre dépôt
