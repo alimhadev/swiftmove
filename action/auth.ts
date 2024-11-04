@@ -47,12 +47,10 @@ export async function signin(formData: FormData) {
     // set the token to header for future requests
     const cookieStore = cookies()
     cookieStore.set('token', token.token, { path: '/', httpOnly: true })
-
-    if (user.isAdmin) {
-        redirect('/admin')
+    return {
+        token: token.token,
+        user
     }
-    redirect('/dashboard')
-
 }
 
 export async function logout() {

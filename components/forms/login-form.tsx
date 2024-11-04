@@ -27,6 +27,7 @@ import {
 } from "../ui/form";
 import { useToast } from "@/hooks/use-toast"
 import { signin } from "@/action/auth";
+import { redirect } from "next/navigation";
 
 
 export default function CarteConnexion() {
@@ -62,6 +63,12 @@ export default function CarteConnexion() {
                                 })
                                 return
                             }
+                            const { token, user } = signinData
+                            localStorage.setItem("token", token);
+                            if (user?.isAdmin) {
+                                redirect('/admin')
+                            }
+                            redirect('/dashboard')
 
                             // if (signinData) {
                             //     const { user, token } = signinData

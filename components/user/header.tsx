@@ -103,7 +103,7 @@ const Header = ({ setActiveTab, activeTab }: { setActiveTab: React.Dispatch<Reac
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        {/* <DropdownMenuItem>
                             <User className="mr-2 h-4 w-4" />
                             <Link
                                 href="#"
@@ -113,7 +113,7 @@ const Header = ({ setActiveTab, activeTab }: { setActiveTab: React.Dispatch<Reac
                                 Profil
                             </Link>
 
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                             <LogOut className="mr-2 h-4 w-4" />

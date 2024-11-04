@@ -32,7 +32,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             }
         }
         getUser()
-    }, []);
+    }, [user]);
 
     return (
         <QueryClientProvider client={queryClient}>

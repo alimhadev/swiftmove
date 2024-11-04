@@ -41,8 +41,8 @@ export default function RegisterForm() {
             password: "",
             confirmPassword: "",
             solde: "0",
-            phoneNumber:""
-            
+            phoneNumber: ""
+
         },
     });
     const { watch } = form;
