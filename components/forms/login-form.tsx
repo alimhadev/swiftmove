@@ -25,16 +25,13 @@ import {
     FormLabel,
     FormMessage,
 } from "../ui/form";
-import { redirect, useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
+import { useToast } from "@/hooks/use-toast"
 import { signin } from "@/action/auth";
-import { useAppContext } from "@/hooks/appProvider";
+
 
 export default function CarteConnexion() {
-    const { user, setUser } = useAppContext()
-    const localActive = useLocale();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
+    const { toast } = useToast()
     type formSchema = z.infer<typeof signInSchema>;
     const form = useForm<formSchema>({
         resolver: zodResolver(signInSchema),
@@ -44,7 +41,7 @@ export default function CarteConnexion() {
         },
     });
 
-    
+
 
     return (
         <Card className="w-full min-[400px]:w-[400px]">
@@ -57,20 +54,29 @@ export default function CarteConnexion() {
                         //  onSubmit={form.handleSubmit(onSubmit)}
                         action={async (formData) => {
                             const signinData = await signin(formData)
-                            if (signinData) {
-                                const { user, token } = signinData
-                                setUser(user)
-
-                                localStorage.setItem("token", token.token);
-                                localStorage.setItem("user", JSON.stringify(user));
-                                if (user.isAdmin) {
-                                    redirect('/admin')
-                                } else {
-                                    redirect('/dashboard')
-                                }
-
+                            if (signinData.error) {
+                                toast({
+                                    title: "Erreur lors de la connexion",
+                                    description: signinData.message,
+                                    variant: "destructive",
+                                })
+                                return
                             }
-                            redirect('/dashboard')
+
+                            // if (signinData) {
+                            //     const { user, token } = signinData
+                            //     setUser(user)
+
+                            //     localStorage.setItem("token", token.token);
+                            //     localStorage.setItem("user", JSON.stringify(user));
+                            //     if (user.isAdmin) {
+                            //         redirect('/admin')
+                            //     } else {
+                            //         redirect('/dashboard')
+                            //     }
+
+                            // }
+                            // redirect('/dashboard')
                         }}
                     >
                         <div className="grid w-full items-center gap-4">

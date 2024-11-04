@@ -30,44 +30,6 @@ import { format } from 'date-fns'
 import { useToast } from "@/hooks/use-toast"
 import { getServerUrl } from '@/lib/utils'
 
-interface CreatedBy {
-    id: number
-    firstname: string
-    lastname: string
-}
-
-interface Deposit {
-    id: number
-    amount: string
-    method: string
-    userId: number
-    createdAt: string
-    updatedAt: string
-    isValidated: boolean
-    photo: string
-    createdBy: number
-    updatedBy: number | null
-    created: CreatedBy
-    user: User
-    updated: null | CreatedBy
-}
-
-interface Withdrawal {
-    id: number
-    amount: string
-    method: string
-    cost: string
-    userId: number
-    createdAt: string
-    updatedAt: string
-    phoneNumber: string
-    createdBy: number
-    updatedBy: number | null
-    isValidated: boolean
-    user: User
-    updated: null | CreatedBy
-    created: CreatedBy
-}
 
 type User = {
     id: number

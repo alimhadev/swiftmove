@@ -3,6 +3,8 @@
 import { getServerUrl } from "@/lib/utils";
 import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { error } from "console";
 const serverUrl = getServerUrl();
 export async function signin(formData: FormData) {
     const email = formData.get('email')
@@ -24,21 +26,36 @@ export async function signin(formData: FormData) {
             password,
         }),
     })
+    const response = await request.json()
     if (!request.ok) {
-        const errorResponse = await request.json()
-        console.log('Error logging in ', errorResponse)
-        if ('message' in errorResponse && errorResponse.message === 'email not verified') {
+
+        if ('message' in response && response.message === 'email not verified') {
             redirect('/email-confirmation')
         }
-        // TODO: handle error
-        // throw new Error('Error logging in')
+        console.log('response', response)
+        if ('errors' in response) {
+            return {
+                error: true,
+                message: response.errors[0].message
+            }
+        }
+        return {
+            error: true,
+            message: "Une erreur est survenue lors de la connexion"
+        }
+
     }
 
-    const response = await request.json() as UserResponse
-    const { token, user } = response
+    const { token, user } = response as UserResponse
+    // set the token to header for future requests
+    const cookieStore = cookies()
+    cookieStore.set('token', token.token, { path: '/', httpOnly: true })
     await createSession(token.token)
-    
-    return response
+
+    if (user.isAdmin) {
+        redirect('/admin')
+    }
+    redirect('/dashboard')
 
 }
 

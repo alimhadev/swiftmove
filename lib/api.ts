@@ -34,7 +34,7 @@ export const apiClient = async <T>(endpoint: string, method: string = "GET", bod
 };
 
 export const getUsers = (): Promise<User[]> => apiClient<User[]>(`/users`);
-export const getUserById = (id: string): Promise<User> => apiClient<User>(`/users/${id}`);
+export const getCurrentUser = (): Promise<User> => apiClient<User>(`/current-user`);
 
 export const getVehicles = (): Promise<Vehicule[]> => apiClient<Vehicule[]>('/vehicles');
 
@@ -53,8 +53,12 @@ export const subscribeToPlan = (payload: { investmentPlanId: number }): Promise<
 
 export const userIncrease = (): Promise<Investment[]> => apiClient(`/user-increases`);
 export const getUserActivePlans = (): Promise<ActiveUserInvestment[]> => apiClient<ActiveUserInvestment[]>('/user-subscribtion-plans');
-export const getTotalInvestments = (): Promise<number> => apiClient<number>('/total-investments');
+export const getTotalInvestments = (): Promise<{ totalInvestment: number }> => apiClient<{ totalInvestment: number }>('/total-investment');
 
 export const getWithdrawalRequests = (): Promise<Withdrawal[]> => apiClient<Withdrawal[]>('/withdrawals');
 
-export const approveWithdrawal = (id: number): Promise<any> => apiClient(`/validate-withdrawal/${id}`, 'POST'); 
+export const approveWithdrawal = (id: number): Promise<any> => apiClient(`/validate-withdrawal/${id}`, 'POST');
+export const requestPasswordReset = (email: string): Promise<any> => apiClient(`/forgot-password`, 'POST', { email });
+export const resetPassword = (payload: { password: string, token: string, email: string }): Promise<any> => apiClient(`/reset-password`, 'POST', payload);
+export const getUserWithdrawalRequests = (): Promise<Withdrawal[]> => apiClient<Withdrawal[]>('/withdrawals-by-user');
+export const getUserDepositRequests = (): Promise<Deposit[]> => apiClient<Deposit[]>('/deposits-by-user');

@@ -5,7 +5,7 @@ import {
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query'
-import { getUserById } from "@/lib/api";
+import { getCurrentUser } from "@/lib/api";
 interface IAppContext {
     user?: User
     setUser: (user: User) => void
@@ -20,13 +20,16 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = React.useState<User>();
     useEffect(() => {
         const getUser = async () => {
-            const user = localStorage.getItem("user");
-            if (!user) {
-                return;
+            try {
+                const user = localStorage.getItem("token");
+                if (!user) {
+                    return;
+                }
+                const currentUser = await getCurrentUser()
+                setUser(currentUser)
+            } catch (error) {
+                console.log("error", error)
             }
-            const id = JSON.parse(user).id
-            const dbUser = await getUserById(id)
-            setUser(dbUser)
         }
         getUser()
     }, []);

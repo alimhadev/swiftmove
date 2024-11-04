@@ -51,11 +51,7 @@ import Transactions from "../user/tabs/transactions";
 import Investements from "../user/tabs/investements";
 
 
-const transactionHistory = [
-    { id: 1, type: "Dépôt", amount: 100, date: "2023-05-01" },
-    { id: 2, type: "Retrait", amount: 50, date: "2023-05-15" },
-    { id: 3, type: "Dépôt", amount: 200, date: "2023-06-01" },
-];
+
 
 export default function UserDashboard() {
     const [activeTab, setActiveTab] = useState("dashboard");
@@ -86,7 +82,7 @@ export default function UserDashboard() {
                         <Dashboard setActiveTab={setActiveTab} />
                     )}
                     {activeTab === "transactions" && (
-                        <Transactions transactionHistory={transactionHistory} />
+                        <Transactions  />
                     )}
                     {activeTab === "investments" && (
                         <Investements />

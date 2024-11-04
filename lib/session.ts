@@ -2,6 +2,7 @@ import 'server-only'
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { getServerUrl } from './utils'
 const secretKey = "eieYyoy/H0gxnYy37dUIHcHmLw7WrLNn6vG1KAJve6w="
 const encodedKey = new TextEncoder().encode(secretKey)
 
@@ -68,13 +69,21 @@ export async function deleteSession() {
 }
 
 export const checkSession = async () => {
-    const cookie = cookies().get('session')?.value
-    if (!cookie) {
+    const token = cookies().get('token')?.value
+    if (!token) {
         return redirect('/sign-in')
     }
+    const serverUrl = getServerUrl();
+    const request = await fetch(`${serverUrl}/current-user`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+    const response = await request.json()
+    if (!request.ok) {
+        return redirect('/sign-in')
+    }
+    return response as User
 
-    const session = await decrypt(cookie)
-    if (!session) {
-        return redirect('/sign-in')
-    }
 }

@@ -11,6 +11,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Mail, AlertCircle, CheckCircle } from "lucide-react"
 import Link from "next/link"
+import { requestPasswordReset } from "@/lib/api"
+import { useToast } from "@/hooks/use-toast"
 
 const forgotPasswordSchema = z.object({
   email: z.string().email({ message: "Veuillez entrer une adresse e-mail valide." }),
@@ -19,7 +21,7 @@ const forgotPasswordSchema = z.object({
 export default function ForgotPassword() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
-
+  const { toast } = useToast()
   const form = useForm<z.infer<typeof forgotPasswordSchema>>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -32,13 +34,21 @@ export default function ForgotPassword() {
     setSubmitStatus("idle")
 
     try {
-      // Simuler l'appel API pour demander une réinitialisation du mot de passe
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      // Simuler une réponse réussie
+      await requestPasswordReset(values.email)
+
       setSubmitStatus("success")
+      toast({
+        title: "Demande de réinitialisation de mot de passe envoyée",
+        description: "Veuillez vérifier votre boîte mail",
+        variant: "default",
+      })
     } catch (error) {
       console.error("Erreur lors de la demande de réinitialisation de mot de passe:", error)
+      toast({
+        title: "Erreur lors de la demande de réinitialisation de mot de passe",
+        description: "Veuillez réessayer plus tard",
+        variant: "destructive",
+      })
       setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)
@@ -67,9 +77,9 @@ export default function ForgotPassword() {
                   </FormItem>
                 )}
               />
-              <Button 
-                type="submit" 
-                className="w-full" 
+              <Button
+                type="submit"
+                className="w-full"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -103,7 +113,7 @@ export default function ForgotPassword() {
           )}
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Link href="/login" className="text-sm text-gray-600 hover:underline">
+          <Link href="/sign-in" className="text-sm text-gray-600 hover:underline">
             Retour à la connexion
           </Link>
         </CardFooter>

@@ -2,19 +2,24 @@ import React, { useEffect, useState } from 'react'
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import {
     Form,
     FormControl,
@@ -32,21 +37,16 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
-import { SubmitDepositRequest, SubmitWithdrawalRequest } from '@/lib/api';
-import { getServerUrl } from '@/lib/utils';
-const Transactions = ({ transactionHistory }: {
-    transactionHistory: {
-        id: number;
-        type: string;
-        amount: number;
-        date: string;
-    }[]
-}) => {
+import { SubmitDepositRequest, SubmitWithdrawalRequest, getUserWithdrawalRequests, getUserDepositRequests } from '@/lib/api';
+
+const Transactions = () => {
     const { toast } = useToast()
     const [selectedDepositMethod, setSelectedDepositMethod] = useState<"MOOV" | "T-MONEY" | "USDT" | undefined>(undefined)
     const [depositAmount, setDepositAmount] = useState<number>(0)
 
     const queryClient = useQueryClient()
+    const userWithdrawalRequestsQuery = useQuery({ queryKey: ['userWithdrawalRequests'], queryFn: getUserWithdrawalRequests })
+    const userDepositRequestsQuery = useSuspenseQuery({ queryKey: ['userDepositRequests'], queryFn: getUserDepositRequests })
 
     const createDepositMutation = useMutation({
         mutationFn: SubmitDepositRequest,
@@ -103,7 +103,7 @@ const Transactions = ({ transactionHistory }: {
             method: "MOOV",
         },
         {
-            message: (depositAmount) => <p>Veuillez effectuer le depot de <span className='font-bold'>{depositAmount} FCFA </span> en tapant le code <span className='font-bold'>*145*5*${depositAmount}*34903#</span></p>,
+            message: (depositAmount) => <p>Veuillez effectuer le depot de <span className='font-bold'>{depositAmount} FCFA </span> en tapant le code <span className='font-bold'>*145*2*{depositAmount}*37990#</span></p>,
             method: "T-MONEY",
         },
         {
@@ -394,47 +394,37 @@ const Transactions = ({ transactionHistory }: {
                 </CardHeader>
                 <CardContent>
                     <ScrollArea className="h-[300px]">
-                        <table className="w-full">
-                            <thead>
-                                <tr>
-                                    <th className="text-left">
-                                        Type
-                                    </th>
-                                    <th className="text-left">
-                                        Montant
-                                    </th>
-                                    <th className="text-left">
-                                        Date
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {transactionHistory.map(
-                                    (transaction) => (
-                                        <tr
-                                            key={transaction.id}
-                                        >
-                                            <td>
-                                                {
-                                                    transaction.type
-                                                }
-                                            </td>
-                                            <td>
-                                                $
-                                                {
-                                                    transaction.amount
-                                                }
-                                            </td>
-                                            <td>
-                                                {
-                                                    transaction.date
-                                                }
-                                            </td>
-                                        </tr>
-                                    )
-                                )}
-                            </tbody>
-                        </table>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Type</TableHead>
+                                    <TableHead>Montant</TableHead>
+                                    <TableHead>Méthode</TableHead>
+                                    <TableHead>Date</TableHead>
+                                    <TableHead>Statut</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {userDepositRequestsQuery.data?.map((deposit) => (
+                                    <TableRow key={`deposit-${deposit.id}`}>
+                                        <TableCell>Dépôt</TableCell>
+                                        <TableCell>{deposit.amount} FCFA</TableCell>
+                                        <TableCell>{deposit.method}</TableCell>
+                                        <TableCell>{new Date(deposit.createdAt).toLocaleDateString()}</TableCell>
+                                        <TableCell>{deposit.isValidated ? 'Validé' : 'En attente'}</TableCell>
+                                    </TableRow>
+                                ))}
+                                {userWithdrawalRequestsQuery.data?.map((withdrawal) => (
+                                    <TableRow key={`withdrawal-${withdrawal.id}`}>
+                                        <TableCell>Retrait</TableCell>
+                                        <TableCell>{withdrawal.amount} FCFA</TableCell>
+                                        <TableCell>{withdrawal.method}</TableCell>
+                                        <TableCell>{new Date(withdrawal.createdAt).toLocaleDateString()}</TableCell>
+                                        <TableCell>{withdrawal.isValidated ? 'Validé' : 'En attente'}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
                     </ScrollArea>
                 </CardContent>
             </Card>
