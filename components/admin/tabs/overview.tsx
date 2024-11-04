@@ -68,7 +68,7 @@ const Overview = () => {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">
-                            {totalInvestments?.totalInvestment} FCFA
+                            {totalInvestments?.totalInvestments} FCFA
                         </div>
                     </CardContent>
                 </Card>

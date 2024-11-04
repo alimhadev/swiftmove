@@ -53,7 +53,7 @@ export const subscribeToPlan = (payload: { investmentPlanId: number }): Promise<
 
 export const userIncrease = (): Promise<Investment[]> => apiClient(`/user-increases`);
 export const getUserActivePlans = (): Promise<ActiveUserInvestment[]> => apiClient<ActiveUserInvestment[]>('/user-subscribtion-plans');
-export const getTotalInvestments = (): Promise<{ totalInvestment: number }> => apiClient<{ totalInvestment: number }>('/total-investment');
+export const getTotalInvestments = (): Promise<{ totalInvestments: number }> => apiClient<{ totalInvestments: number }>('/total-investment');
 
 export const getWithdrawalRequests = (): Promise<Withdrawal[]> => apiClient<Withdrawal[]>('/withdrawals');
 

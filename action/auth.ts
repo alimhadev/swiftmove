@@ -1,10 +1,8 @@
 'use server'
 
 import { getServerUrl } from "@/lib/utils";
-import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { error } from "console";
 const serverUrl = getServerUrl();
 export async function signin(formData: FormData) {
     const email = formData.get('email')
@@ -50,7 +48,6 @@ export async function signin(formData: FormData) {
     // set the token to header for future requests
     const cookieStore = cookies()
     cookieStore.set('token', token.token, { path: '/', httpOnly: true })
-    await createSession(token.token)
 
     if (user.isAdmin) {
         redirect('/admin')
@@ -59,9 +56,20 @@ export async function signin(formData: FormData) {
 
 }
 
-export async function signout() {
+export async function logout() {
+    const cookiesStore = cookies()
+    const token = cookiesStore.get('token')?.value
+
+    const request = await fetch(`${serverUrl}/logout`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+    const response = await request.json()
+    cookiesStore.delete('token')
 
 
-    await deleteSession()
 
 }

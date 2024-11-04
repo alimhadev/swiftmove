@@ -1,56 +1,11 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-    Sheet,
-    SheetContent,
-    SheetOverlay,
-    SheetTrigger,
-} from "@/components/ui/sheet";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-    BarChart,
-    Bell,
-    DollarSign,
-    Home,
-    Menu,
-    PlusCircle,
-    RefreshCw,
-    Settings,
-    User, LogOut
-} from "lucide-react";
-
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import Image from 'next/image'
-import Link from "next/link";
 import { AccountForm } from "@/components/forms/account-form";
-import { Separator } from "@/components/ui/separator";
-import LogoutButton from "./logout-button";
 import { NavItems } from "../user/nav-items";
 import Header from "../user/header";
 import Dashboard from "../user/tabs/dashboard";
 import Transactions from "../user/tabs/transactions";
 import Investements from "../user/tabs/investements";
-
-
 
 
 export default function UserDashboard() {
