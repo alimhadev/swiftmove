@@ -28,7 +28,6 @@ export const apiClient = async <T>(endpoint: string, method: string = "GET", bod
         }
         return await response.json();
     } catch (error: any) {
-        console.log("Error sending request:", error)
         throw new Error(`${error.message}`);
     }
 };

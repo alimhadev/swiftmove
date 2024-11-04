@@ -80,10 +80,8 @@ export default function RegisterForm() {
             }
             router.push(`/email-confirmation`);
             // const data = await response.json()
-            // console.log(data)
             // Handle successful registration (e.g., redirect to login page)
         } catch (error) {
-            console.error("ERROR REGISTERING USER", error);
             // Handle error (e.g., show error message to user)
         } finally {
             setIsLoading(false);

@@ -164,7 +164,6 @@ const Transactions = () => {
             formData.append("amount", values.amount.toString());
             formData.append("method", values.method);
             formData.append("isValitated", false.toString());
-            console.log("formData", formData)
 
             createDepositMutation.mutateAsync(formData)
         }
@@ -173,7 +172,6 @@ const Transactions = () => {
     }
     const withdrawalSubmit = async (values: z.infer<typeof withdrawalFormSchema>) => {
         // TODO: remove the isValidated 
-        console.log("values ", values)
 
         createWithdrawalMutation.mutateAsync(values)
         // reset();

@@ -45,7 +45,6 @@ export default function ResetPassword({ token, email }: { token: string, email: 
 
       setSubmitStatus("success")
     } catch (error) {
-      console.error("Error resetting password:", error)
       setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)

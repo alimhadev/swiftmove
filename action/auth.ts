@@ -30,7 +30,6 @@ export async function signin(formData: FormData) {
         if ('message' in response && response.message === 'email not verified') {
             redirect('/email-confirmation')
         }
-        console.log('response', response)
         if ('errors' in response) {
             return {
                 error: true,

@@ -14,7 +14,6 @@ export default function EmailVerified({
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const confirmationToken = searchParams.confirmation_token
-  console.log("searchParams", confirmationToken)
   if (!confirmationToken) {
     return notFound()
   }
@@ -55,7 +54,6 @@ export default function EmailVerified({
         }
 
       } catch (error) {
-        console.error("Error verifying email", error);
       } finally {
         setIsLoading(false);
       }

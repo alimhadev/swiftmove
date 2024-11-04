@@ -43,7 +43,7 @@ export default function ForgotPassword() {
         variant: "default",
       })
     } catch (error) {
-      console.error("Erreur lors de la demande de réinitialisation de mot de passe:", error)
+     
       toast({
         title: "Erreur lors de la demande de réinitialisation de mot de passe",
         description: "Veuillez réessayer plus tard",

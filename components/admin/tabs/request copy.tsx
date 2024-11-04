@@ -38,7 +38,6 @@ const UserRequests = () => {
     const depositQuery = useQuery({ queryKey: ['vehicles',], queryFn: getDepositRequests })
     
     const withdrawalQuery = useQuery({ queryKey: ['withdrawals',], queryFn: getWithdrawalRequests })
-    console.log("withdrawalQuery", withdrawalQuery.data)
     const approveMutation = useMutation({
         mutationFn: approveDeposit,
         onSuccess: () => {
