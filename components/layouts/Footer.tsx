@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useTranslations } from "next-intl";
+import TelegramIcon from "@/public/assets/telegram-icon.svg";
 
 const Footer = () => {
     const t = useTranslations("SwiftMovePage.Footer");
@@ -797,7 +798,16 @@ const Footer = () => {
                             <h3 className="font-semibold">{t("col3.title")}</h3>
                             <div className="flex flex-col gap-2">
                                 <p>{t("col3.link1")}</p>
-                                <p>{t("col3.link2")}</p>
+                                <p>
+                                    <a
+                                        href="https://t.me/+7JZN7j-RdXwwYzk0"
+                                        target="_blank"
+                                        className="flex items-center gap-1"
+                                    >
+                                        {t("col3.link2")}
+                                        <TelegramIcon className="h-10" />
+                                    </a>
+                                </p>
                             </div>
                         </div>
                     </div>
