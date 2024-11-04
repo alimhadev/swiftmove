@@ -4,6 +4,8 @@ export default function LogoutButton() {
     return (
         <form action={async () => {
             await logout()
+            // delete the token from local storage
+            localStorage.removeItem("token")
         }}>
 
             <Button variant="outline" >
