@@ -11,7 +11,7 @@ const HowItWorksSection = () => {
             id="how-it-works"
             className="relative flex justify-center w-full px-5 sm:px-14 py-20"
         >
-            <div className="absolute top-0 left-0 bg-gradient-to-b sm:bg-gradient-to-br lg:bg-gradient-to-r from-info/50 via-success/20 to-info/50 w-full h-full -z-10"></div>
+            <div className="absolute top-0 left-0 bg-gradient-to-b sm:bg-gradient-to-br lg:bg-gradient-to-r from-second/50 via-first/20 to-second/50 w-full h-full -z-10"></div>
             <div className="container flex flex-col items-center w-full gap-16">
                 <div className="flex flex-col items-center gap-3">
                     <h2 className="font-semibold text-center text-xl sm:text-2xl lg:text-4xl">
@@ -28,7 +28,7 @@ const HowItWorksSection = () => {
                         icons={[<Bike />, <Truck />]}
                         title={t("card1.title")}
                         text={t("card1.body")}
-                        stepNumberClassName="bg-gradient-to-b sm:bg-gradient-to-br lg:bg-gradient-to-r from-info to-success"
+                        stepNumberClassName="bg-gradient-to-b sm:bg-gradient-to-br lg:bg-gradient-to-r from-second to-first"
                     />
                     <StepsCard
                         stepNumber={2}
@@ -36,7 +36,7 @@ const HowItWorksSection = () => {
                         icons={[<Wallet />]}
                         title={t("card2.title")}
                         text={t("card2.body")}
-                        stepNumberClassName="bg-success"
+                        stepNumberClassName="bg-first"
                     />
                     <StepsCard
                         stepNumber={3}
@@ -45,7 +45,7 @@ const HowItWorksSection = () => {
                         title={t("card3.title")}
                         text={t("card3.body")}
                         className="sm:col-span-2 min-[1080px]:col-span-1"
-                        stepNumberClassName="bg-gradient-to-b sm:bg-gradient-to-br lg:bg-gradient-to-r from-success to-info"
+                        stepNumberClassName="bg-gradient-to-b sm:bg-gradient-to-br lg:bg-gradient-to-r from-first to-second"
                     />
                 </div>
             </div>

@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
     Card,
     CardContent,
@@ -17,7 +17,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import {
     Dialog,
     DialogContent,
@@ -35,12 +35,12 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
-import { PlusIcon, Pencil, Trash2, ArrowLeft } from 'lucide-react'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+} from "@/components/ui/table";
+import { PlusIcon, Pencil, Trash2, ArrowLeft } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     Form,
     FormControl,
@@ -49,13 +49,20 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import { getVehicles, getInvestmentPlans, createInvestmentPlan, updateInvestmentPlan, deleteInvestmentPlan } from '@/lib/api'
+} from "@/components/ui/form";
+import {
+    getVehicles,
+    getInvestmentPlans,
+    createInvestmentPlan,
+    updateInvestmentPlan,
+    deleteInvestmentPlan,
+} from "@/lib/api";
 
 const planFormSchema = z.object({
     id: z.number().optional(),
     name: z.string().min(4, {
-        message: "Veuillez entrer un nom de plan valide de 4 caractères minimum.",
+        message:
+            "Veuillez entrer un nom de plan valide de 4 caractères minimum.",
     }),
     amount: z.number().min(0),
     incomePercentage: z.number().min(0).max(100),
@@ -67,36 +74,43 @@ const planFormSchema = z.object({
     }),
     created_at: z.date().optional(),
     updated_at: z.date().optional(),
-})
+});
 
-type PlanFormValues = z.infer<typeof planFormSchema>
+type PlanFormValues = z.infer<typeof planFormSchema>;
 
 export default function Plans() {
-    const queryClient = useQueryClient()
-    const [editingPlan, setEditingPlan] = useState<PlanFormValues | null>(null)
-    const { data: vehicles, isLoading } = useQuery({ queryKey: ['vehicles'], queryFn: getVehicles })
-    const { data: investmentPlans, isLoading: isLoadingInvestmentPlans } = useQuery({ queryKey: ['investmentPlans'], queryFn: getInvestmentPlans })
+    const queryClient = useQueryClient();
+    const [editingPlan, setEditingPlan] = useState<PlanFormValues | null>(null);
+    const { data: vehicles, isLoading } = useQuery({
+        queryKey: ["vehicles"],
+        queryFn: getVehicles,
+    });
+    const { data: investmentPlans, isLoading: isLoadingInvestmentPlans } =
+        useQuery({
+            queryKey: ["investmentPlans"],
+            queryFn: getInvestmentPlans,
+        });
 
     const createInvestmentPlanMutation = useMutation({
         mutationFn: createInvestmentPlan,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['investmentPlans'] })
-        }
-    })
+            queryClient.invalidateQueries({ queryKey: ["investmentPlans"] });
+        },
+    });
 
     const updateInvestmentPlanMutation = useMutation({
         mutationFn: updateInvestmentPlan,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['investmentPlans'] })
-            setEditingPlan(null)
-        }
-    })
+            queryClient.invalidateQueries({ queryKey: ["investmentPlans"] });
+            setEditingPlan(null);
+        },
+    });
     const deleteInvestmentPlanMutation = useMutation({
         mutationFn: deleteInvestmentPlan,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['investmentPlans'] })
-        }
-    })
+            queryClient.invalidateQueries({ queryKey: ["investmentPlans"] });
+        },
+    });
 
     const planForm = useForm<PlanFormValues>({
         resolver: zodResolver(planFormSchema),
@@ -107,35 +121,40 @@ export default function Plans() {
             durationInMonth: 0,
             durationInDay: 0,
             minimumWithdrawalAmount: 0,
-            vehicleId: '',
+            vehicleId: "",
         },
-    })
+    });
 
     const onSubmit = async (values: PlanFormValues) => {
         if (editingPlan) {
-            await updateInvestmentPlanMutation.mutateAsync({ ...values, id: editingPlan.id })
+            await updateInvestmentPlanMutation.mutateAsync({
+                ...values,
+                id: editingPlan.id,
+            });
         } else {
-            await createInvestmentPlanMutation.mutateAsync(values)
+            await createInvestmentPlanMutation.mutateAsync(values);
         }
-        planForm.reset()
-    }
+        planForm.reset();
+    };
 
     const startEditing = (plan: PlanFormValues) => {
-        setEditingPlan(plan)
-        planForm.reset(plan)
-    }
+        setEditingPlan(plan);
+        planForm.reset(plan);
+    };
 
     const cancelEditing = () => {
-        setEditingPlan(null)
-        planForm.reset()
-    }
+        setEditingPlan(null);
+        planForm.reset();
+    };
 
     return (
         <div className="grid grid-cols-1 min-[1200px]:grid-cols-3 gap-5">
             <Card className="h-fit">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle>
-                        {editingPlan ? 'Modifier le plan' : 'Créer un nouveau plan'}
+                        {editingPlan
+                            ? "Modifier le plan"
+                            : "Créer un nouveau plan"}
                     </CardTitle>
                     {editingPlan && (
                         <Button
@@ -151,7 +170,10 @@ export default function Plans() {
                 </CardHeader>
                 <CardContent>
                     <Form {...planForm}>
-                        <form onSubmit={planForm.handleSubmit(onSubmit)} className="space-y-8">
+                        <form
+                            onSubmit={planForm.handleSubmit(onSubmit)}
+                            className="space-y-8"
+                        >
                             <FormField
                                 control={planForm.control}
                                 name="name"
@@ -159,7 +181,10 @@ export default function Plans() {
                                     <FormItem>
                                         <FormLabel>Nom du plan</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Nom du plan" {...field} />
+                                            <Input
+                                                placeholder="Nom du plan"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormDescription>
                                             Le nom du plan
@@ -175,7 +200,16 @@ export default function Plans() {
                                     <FormItem>
                                         <FormLabel>Montant</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Montant" {...field} type='number' onChange={(e) => field.onChange(e.target.valueAsNumber)} />
+                                            <Input
+                                                placeholder="Montant"
+                                                {...field}
+                                                type="number"
+                                                onChange={(e) =>
+                                                    field.onChange(
+                                                        e.target.valueAsNumber
+                                                    )
+                                                }
+                                            />
                                         </FormControl>
                                         <FormDescription>
                                             Montant du plan
@@ -191,7 +225,16 @@ export default function Plans() {
                                     <FormItem>
                                         <FormLabel>Pourcentage</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Pourcentage" {...field} type='number' onChange={(e) => field.onChange(e.target.valueAsNumber)} />
+                                            <Input
+                                                placeholder="Pourcentage"
+                                                {...field}
+                                                type="number"
+                                                onChange={(e) =>
+                                                    field.onChange(
+                                                        e.target.valueAsNumber
+                                                    )
+                                                }
+                                            />
                                         </FormControl>
                                         <FormDescription>
                                             Pourcentage de retour
@@ -207,7 +250,16 @@ export default function Plans() {
                                     <FormItem>
                                         <FormLabel>Durée en mois</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Durée en mois" {...field} type='number' onChange={(e) => field.onChange(e.target.valueAsNumber)} />
+                                            <Input
+                                                placeholder="Durée en mois"
+                                                {...field}
+                                                type="number"
+                                                onChange={(e) =>
+                                                    field.onChange(
+                                                        e.target.valueAsNumber
+                                                    )
+                                                }
+                                            />
                                         </FormControl>
                                         <FormDescription>
                                             Durée en mois
@@ -223,7 +275,16 @@ export default function Plans() {
                                     <FormItem>
                                         <FormLabel>Durée en jours</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Durée en jours" {...field} type='number' onChange={(e) => field.onChange(e.target.valueAsNumber)} />
+                                            <Input
+                                                placeholder="Durée en jours"
+                                                {...field}
+                                                type="number"
+                                                onChange={(e) =>
+                                                    field.onChange(
+                                                        e.target.valueAsNumber
+                                                    )
+                                                }
+                                            />
                                         </FormControl>
                                         <FormDescription>
                                             Durée en jours
@@ -237,9 +298,20 @@ export default function Plans() {
                                 name="minimumWithdrawalAmount"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Montant minimum de retrait</FormLabel>
+                                        <FormLabel>
+                                            Montant minimum de retrait
+                                        </FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Montant minimum de retrait" {...field} type='number' onChange={(e) => field.onChange(e.target.valueAsNumber)} />
+                                            <Input
+                                                placeholder="Montant minimum de retrait"
+                                                {...field}
+                                                type="number"
+                                                onChange={(e) =>
+                                                    field.onChange(
+                                                        e.target.valueAsNumber
+                                                    )
+                                                }
+                                            />
                                         </FormControl>
                                         <FormDescription>
                                             Montant minimum de retrait
@@ -263,11 +335,16 @@ export default function Plans() {
                                                     <SelectValue placeholder="Sélectionnez un véhicule" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {vehicles?.map((vehicle) => (
-                                                        <SelectItem key={vehicle.id} value={vehicle.id.toString()}>
-                                                            {vehicle.name}
-                                                        </SelectItem>
-                                                    ))}
+                                                    {vehicles?.map(
+                                                        (vehicle) => (
+                                                            <SelectItem
+                                                                key={vehicle.id}
+                                                                value={vehicle.id.toString()}
+                                                            >
+                                                                {vehicle.name}
+                                                            </SelectItem>
+                                                        )
+                                                    )}
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
@@ -280,9 +357,15 @@ export default function Plans() {
                             />
                             <Button
                                 type="submit"
-                                className={editingPlan ? "bg-info hover:bg-info/90" : "bg-success hover:bg-success/90"}
+                                className={
+                                    editingPlan
+                                        ? "bg-first hover:bg-first/90"
+                                        : "bg-first hover:bg-first/90"
+                                }
                             >
-                                {editingPlan ? 'Mettre à jour le plan' : 'Créer le plan'}
+                                {editingPlan
+                                    ? "Mettre à jour le plan"
+                                    : "Créer le plan"}
                             </Button>
                         </form>
                     </Form>
@@ -313,16 +396,28 @@ export default function Plans() {
                                 <TableRow key={plan.id}>
                                     <TableCell>{plan.name}</TableCell>
                                     <TableCell>{plan.amount}</TableCell>
-                                    <TableCell>{plan.incomePercentage}%</TableCell>
-                                    <TableCell>{plan.durationInMonth}</TableCell>
+                                    <TableCell>
+                                        {plan.incomePercentage}%
+                                    </TableCell>
+                                    <TableCell>
+                                        {plan.durationInMonth}
+                                    </TableCell>
                                     <TableCell>{plan.durationInDay}</TableCell>
-                                    <TableCell>{plan.minimumWithdrawalAmount}</TableCell>
-                                    <TableCell>{
-                                        vehicles?.find((v) => v.id === parseInt(plan.vehicleId))?.name
-                                    }</TableCell>
-                                    <TableCell className='flex gap-2'>
+                                    <TableCell>
+                                        {plan.minimumWithdrawalAmount}
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            vehicles?.find(
+                                                (v) =>
+                                                    v.id ===
+                                                    parseInt(plan.vehicleId)
+                                            )?.name
+                                        }
+                                    </TableCell>
+                                    <TableCell className="flex gap-2">
                                         <Button
-                                            className="bg-info hover:bg-info/90 h-8 w-8 p-0"
+                                            className="bg-first hover:bg-first/90 h-8 w-8 p-0"
                                             onClick={() => startEditing(plan)}
                                         >
                                             <Pencil className="h-4 w-4" />
@@ -330,7 +425,7 @@ export default function Plans() {
 
                                         <Dialog>
                                             <DialogTrigger asChild>
-                                                <Button className="bg-danger hover:bg-danger/90 w-8 h-8 p-0" >
+                                                <Button className="bg-danger hover:bg-danger/90 w-8 h-8 p-0">
                                                     <Trash2 className="h-4 w-4" />
                                                 </Button>
                                             </DialogTrigger>
@@ -340,20 +435,35 @@ export default function Plans() {
                                                         Suppression
                                                     </DialogTitle>
                                                     <DialogDescription>
-                                                        En supprimant ce plan, vous supprimez tout ce qui y est lié (Plans d'investissement et souscriptions)
+                                                        En supprimant ce plan,
+                                                        vous supprimez tout ce
+                                                        qui y est lié (Plans
+                                                        d'investissement et
+                                                        souscriptions)
                                                     </DialogDescription>
                                                 </DialogHeader>
                                                 <div>
-                                                    Voulez-vous vraiment supprimer ce plan ?
+                                                    Voulez-vous vraiment
+                                                    supprimer ce plan ?
                                                 </div>
                                                 <DialogFooter>
                                                     <DialogClose asChild>
-                                                        <Button type="button" variant="secondary">
+                                                        <Button
+                                                            type="button"
+                                                            variant="secondary"
+                                                        >
                                                             Annuler
                                                         </Button>
                                                     </DialogClose>
-                                                    <Button type="submit" className="bg-danger hover:bg-danger/90"
-                                                        onClick={() => deleteInvestmentPlanMutation.mutateAsync(plan.id?.toString() || "")}
+                                                    <Button
+                                                        type="submit"
+                                                        className="bg-danger hover:bg-danger/90"
+                                                        onClick={() =>
+                                                            deleteInvestmentPlanMutation.mutateAsync(
+                                                                plan.id?.toString() ||
+                                                                    ""
+                                                            )
+                                                        }
                                                     >
                                                         Supprimer
                                                     </Button>
@@ -368,5 +478,5 @@ export default function Plans() {
                 </CardContent>
             </Card>
         </div>
-    )
+    );
 }

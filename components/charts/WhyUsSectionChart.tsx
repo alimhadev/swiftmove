@@ -88,17 +88,17 @@ const WhyUsSectionChart = () => {
                         <Area
                             dataKey="motos"
                             type="natural"
-                            fill="#3b82f6"
+                            fill="#268EC5"
                             fillOpacity={0.3}
-                            stroke="#3b82f6"
+                            stroke="#268EC5"
                             // className="fill-info"
                         />
                         <Area
                             dataKey="vélos"
                             type="natural"
-                            fill="#22c55e"
+                            fill="#174275"
                             fillOpacity={0.3}
-                            stroke="#22c55e"
+                            stroke="#174275"
                             // className="fill-success"
                         />
                     </AreaChart>

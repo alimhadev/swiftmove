@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
     Card,
     CardContent,
@@ -25,12 +25,17 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { createVehicles, getVehicles, updateVehicle, deleteVehicles } from '@/lib/api';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+    createVehicles,
+    getVehicles,
+    updateVehicle,
+    deleteVehicles,
+} from "@/lib/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     Table,
     TableBody,
@@ -39,70 +44,81 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Pencil, Trash2 } from "lucide-react";
 const Vehicles = () => {
     const createVehicleFormSchema = z.object({
         name: z.string().min(4, {
-            message: "Veuillez entrer un nom de véhicule valide de 4 caractères minimum.",
-
+            message:
+                "Veuillez entrer un nom de véhicule valide de 4 caractères minimum.",
         }),
-    })
+    });
 
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
     const createVehicleForm = useForm<z.infer<typeof createVehicleFormSchema>>({
         resolver: zodResolver(createVehicleFormSchema),
         defaultValues: {
             name: "",
         },
-    })
-    const vehiclesQuery = useQuery({ queryKey: ['vehicles',], queryFn: getVehicles })
+    });
+    const vehiclesQuery = useQuery({
+        queryKey: ["vehicles"],
+        queryFn: getVehicles,
+    });
     const createVehiclesMutation = useMutation({
         mutationFn: createVehicles,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['vehicles',] })
-        }
-    })
+            queryClient.invalidateQueries({ queryKey: ["vehicles"] });
+        },
+    });
 
-    const createVehicleOnSubmit = async (values: z.infer<typeof createVehicleFormSchema>) => {
-        await createVehiclesMutation.mutateAsync(values.name)
-    }
+    const createVehicleOnSubmit = async (
+        values: z.infer<typeof createVehicleFormSchema>
+    ) => {
+        await createVehiclesMutation.mutateAsync(values.name);
+    };
 
     const updateVehicleForm = useForm<z.infer<typeof createVehicleFormSchema>>({
         resolver: zodResolver(createVehicleFormSchema),
         defaultValues: {
             name: "",
         },
-    })
+    });
     const updateVehiclesMutation = useMutation({
         mutationFn: updateVehicle,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['vehicles',] })
-        }
-    })
+            queryClient.invalidateQueries({ queryKey: ["vehicles"] });
+        },
+    });
 
-    const updateVehicleOnSubmit = async (values: z.infer<typeof createVehicleFormSchema>, id: string) => {
-        await updateVehiclesMutation.mutateAsync({ name: values.name, id })
-    }
+    const updateVehicleOnSubmit = async (
+        values: z.infer<typeof createVehicleFormSchema>,
+        id: string
+    ) => {
+        await updateVehiclesMutation.mutateAsync({ name: values.name, id });
+    };
 
     const deleteVehiclesMutation = useMutation({
         mutationFn: deleteVehicles,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['vehicles',] })
-        }
-    })
+            queryClient.invalidateQueries({ queryKey: ["vehicles"] });
+        },
+    });
     return (
         <div className="grid grid-cols-1 min-[1200px]:grid-cols-3 gap-5">
             <Card className="h-fit">
                 <CardHeader>
-                    <CardTitle>
-                        Créer un nouveau véhicule
-                    </CardTitle>
+                    <CardTitle>Créer un nouveau véhicule</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Form {...createVehicleForm}>
-                        <form onSubmit={createVehicleForm.handleSubmit(createVehicleOnSubmit)} className="space-y-8">
+                        <form
+                            onSubmit={createVehicleForm.handleSubmit(
+                                createVehicleOnSubmit
+                            )}
+                            className="space-y-8"
+                        >
                             <FormField
                                 control={createVehicleForm.control}
                                 name="name"
@@ -110,7 +126,10 @@ const Vehicles = () => {
                                     <FormItem>
                                         <FormLabel>Nom du véhicule</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="shadcn" {...field} />
+                                            <Input
+                                                placeholder="shadcn"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormDescription>
                                             Le nom du véhicule
@@ -119,11 +138,7 @@ const Vehicles = () => {
                                     </FormItem>
                                 )}
                             />
-                            <Button
-
-                                className="bg-success hover:bg-success/90"
-
-                            >
+                            <Button className="bg-first hover:bg-first/90">
                                 Créer le véhicule
                             </Button>
                         </form>
@@ -147,20 +162,13 @@ const Vehicles = () => {
                         <TableBody>
                             {vehiclesQuery?.data?.map((vehicle) => (
                                 <TableRow key={vehicle.id}>
-                                    <TableCell>
-                                        {vehicle.id}
-                                    </TableCell>
-                                    <TableCell>
-                                        {vehicle.name}
-                                    </TableCell>
+                                    <TableCell>{vehicle.id}</TableCell>
+                                    <TableCell>{vehicle.name}</TableCell>
                                     <TableCell className="flex gap-2">
                                         {/* Edit button */}
-                                        <Dialog >
-                                            <DialogTrigger
-                                                asChild
-                                            >
-
-                                                <Button className="bg-info hover:bg-info/90 h-8 w-8 p-0">
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button className="bg-first hover:bg-first/90 h-8 w-8 p-0">
                                                     <Pencil className="h-4 w-4" />
                                                 </Button>
                                             </DialogTrigger>
@@ -170,35 +178,51 @@ const Vehicles = () => {
                                                         Modifier
                                                     </DialogTitle>
                                                     <DialogDescription>
-                                                        Vous
-                                                        êtes sur
-                                                        le point
-                                                        de
-                                                        modifier
-                                                        le nom
-                                                        de ce
+                                                        Vous êtes sur le point
+                                                        de modifier le nom de ce
                                                         véhicule
                                                     </DialogDescription>
                                                 </DialogHeader>
                                                 <Form {...updateVehicleForm}>
-                                                    <form onSubmit={updateVehicleForm.handleSubmit((values) => updateVehicleOnSubmit(values, vehicle.id.toString()))} className="space-y-8">
+                                                    <form
+                                                        onSubmit={updateVehicleForm.handleSubmit(
+                                                            (values) =>
+                                                                updateVehicleOnSubmit(
+                                                                    values,
+                                                                    vehicle.id.toString()
+                                                                )
+                                                        )}
+                                                        className="space-y-8"
+                                                    >
                                                         <FormField
-                                                            control={updateVehicleForm.control}
+                                                            control={
+                                                                updateVehicleForm.control
+                                                            }
                                                             name="name"
-                                                            render={({ field }) => (
+                                                            render={({
+                                                                field,
+                                                            }) => (
                                                                 <FormItem>
-                                                                    <FormLabel>Nom du véhicule</FormLabel>
+                                                                    <FormLabel>
+                                                                        Nom du
+                                                                        véhicule
+                                                                    </FormLabel>
                                                                     <FormControl>
-                                                                        <Input placeholder="shadcn" {...field} />
+                                                                        <Input
+                                                                            placeholder="shadcn"
+                                                                            {...field}
+                                                                        />
                                                                     </FormControl>
                                                                     <FormDescription>
-                                                                        Le nom du véhicule
+                                                                        Le nom
+                                                                        du
+                                                                        véhicule
                                                                     </FormDescription>
                                                                     <FormMessage />
                                                                 </FormItem>
                                                             )}
                                                         />
-                                                        <div className='flex justify-end gap-3'>
+                                                        <div className="flex justify-end gap-3">
                                                             <DialogClose
                                                                 asChild
                                                             >
@@ -209,12 +233,9 @@ const Vehicles = () => {
                                                                     Annuler
                                                                 </Button>
                                                             </DialogClose>
-                                                            <Button
-
-                                                                className="bg-success hover:bg-success/90"
-
-                                                            >
-                                                                Modifier le véhicule
+                                                            <Button className="bg-first hover:bg-first/90">
+                                                                Modifier le
+                                                                véhicule
                                                             </Button>
                                                         </div>
                                                     </form>
@@ -224,11 +245,9 @@ const Vehicles = () => {
 
                                         {/* Deletion button */}
                                         <Dialog>
-                                            <DialogTrigger
-                                                asChild
-                                            >
+                                            <DialogTrigger asChild>
                                                 <Button className="bg-danger hover:bg-danger/90 w-8 h-8 p-0">
-                                                <Trash2 className="h-4 w-4" />
+                                                    <Trash2 className="h-4 w-4" />
                                                 </Button>
                                             </DialogTrigger>
                                             <DialogContent>
@@ -237,31 +256,19 @@ const Vehicles = () => {
                                                         Suppression
                                                     </DialogTitle>
                                                     <DialogDescription>
-                                                        En
-                                                        supprimant
-                                                        ce
-                                                        véhicule,
-                                                        vous
-                                                        supprimez
-                                                        tout ce
-                                                        qui y
-                                                        est lié
-                                                        (Plans
-                                                        d'investissement
-                                                        et
-                                                        souscriptions)
+                                                        En supprimant ce
+                                                        véhicule, vous supprimez
+                                                        tout ce qui y est lié
+                                                        (Plans d'investissement
+                                                        et souscriptions)
                                                     </DialogDescription>
                                                 </DialogHeader>
                                                 <div>
-                                                    Voulez-vous
-                                                    vraiment
-                                                    supprimer ce
-                                                    véhicule ?
+                                                    Voulez-vous vraiment
+                                                    supprimer ce véhicule ?
                                                 </div>
                                                 <DialogFooter>
-                                                    <DialogClose
-                                                        asChild
-                                                    >
+                                                    <DialogClose asChild>
                                                         <Button
                                                             type="button"
                                                             variant="secondary"
@@ -270,7 +277,11 @@ const Vehicles = () => {
                                                         </Button>
                                                     </DialogClose>
                                                     <Button
-                                                        onClick={() => deleteVehiclesMutation.mutateAsync(vehicle.id.toString())}
+                                                        onClick={() =>
+                                                            deleteVehiclesMutation.mutateAsync(
+                                                                vehicle.id.toString()
+                                                            )
+                                                        }
                                                         type="submit"
                                                         className="bg-danger hover:bg-danger/90"
                                                     >
@@ -287,7 +298,7 @@ const Vehicles = () => {
                 </CardContent>
             </Card>
         </div>
-    )
-}
+    );
+};
 
-export default Vehicles
+export default Vehicles;

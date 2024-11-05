@@ -22,12 +22,16 @@ const InvestmentCard: FC<InvestmentCardProps> = ({
 }) => {
     return (
         <div
-            className={`${eco ? "bg-success/10" : "bg-white"} border h-full rounded-md shadow-md`}
+            className={`${
+                eco ? "bg-first/10" : "bg-white"
+            } border h-full rounded-md shadow-md`}
         >
             <div className="flex flex-col justify-between items-center w-full h-full gap-4 px-5 py-10 text-center">
                 <h3 className="font-semibold text-lg">{title}</h3>
                 <div
-                    className={`relative flex items-center border bg-white gap-1 p-3 rounded-full shadow-md ${eco && "shadow-success/30"}`}
+                    className={`relative flex items-center border bg-white gap-1 p-3 rounded-full shadow-md ${
+                        eco && "shadow-first/30"
+                    }`}
                 >
                     {eco && (
                         <div className="absolute -top-2 -right-2 flex justify-center items-center bg-success/20 w-6 h-6 rounded-full">
@@ -46,7 +50,11 @@ const InvestmentCard: FC<InvestmentCardProps> = ({
                 </div>
                 <div className="w-full">
                     <Button
-                        className={`${eco ? "bg-gradient-to-r from-info to-success" : "bg-info hover:bg-info"} w-full hover:scale-105 transition`}
+                        className={`${
+                            eco
+                                ? "bg-gradient-to-r from-second to-first"
+                                : "bg-first hover:bg-first"
+                        } w-full hover:scale-105 transition`}
                     >
                         Découvrir
                     </Button>

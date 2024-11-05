@@ -41,8 +41,7 @@ export default function RegisterForm() {
             password: "",
             confirmPassword: "",
             solde: "0",
-            phoneNumber: ""
-
+            phoneNumber: "",
         },
     });
     const { watch } = form;
@@ -190,7 +189,7 @@ export default function RegisterForm() {
                         )}
                         <Button
                             type="submit"
-                            className="bg-info hover:bg-info/90 w-full"
+                            className="bg-first hover:bg-first/90 w-full"
                             disabled={isLoading || !passwordsMatch}
                         >
                             {isLoading && (

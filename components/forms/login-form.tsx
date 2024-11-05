@@ -25,14 +25,13 @@ import {
     FormLabel,
     FormMessage,
 } from "../ui/form";
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
 import { signin } from "@/action/auth";
 import { redirect } from "next/navigation";
 
-
 export default function CarteConnexion() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { toast } = useToast()
+    const { toast } = useToast();
     type formSchema = z.infer<typeof signInSchema>;
     const form = useForm<formSchema>({
         resolver: zodResolver(signInSchema),
@@ -41,8 +40,6 @@ export default function CarteConnexion() {
             password: "",
         },
     });
-
-
 
     return (
         <Card className="w-full min-[400px]:w-[400px]">
@@ -54,21 +51,21 @@ export default function CarteConnexion() {
                     <form
                         //  onSubmit={form.handleSubmit(onSubmit)}
                         action={async (formData) => {
-                            const signinData = await signin(formData)
+                            const signinData = await signin(formData);
                             if (signinData.error) {
                                 toast({
                                     title: "Erreur lors de la connexion",
                                     description: signinData.message,
                                     variant: "destructive",
-                                })
-                                return
+                                });
+                                return;
                             }
-                            const { token, user } = signinData
+                            const { token, user } = signinData;
                             localStorage.setItem("token", token);
                             if (user?.isAdmin) {
-                                redirect('/admin')
+                                redirect("/admin");
                             }
-                            redirect('/dashboard')
+                            redirect("/dashboard");
 
                             // if (signinData) {
                             //     const { user, token } = signinData
@@ -107,7 +104,11 @@ export default function CarteConnexion() {
                                     <FormItem>
                                         <FormLabel>Mot de passe</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="" {...field} type="password" />
+                                            <Input
+                                                placeholder=""
+                                                {...field}
+                                                type="password"
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -142,7 +143,7 @@ export default function CarteConnexion() {
                         <CardFooter className="flex justify-between mt-4 p-0">
                             <Button
                                 type="submit"
-                                className="bg-info hover:bg-info/90 w-full"
+                                className="bg-first hover:bg-first/90 w-full"
                                 disabled={isLoading}
                             >
                                 {isLoading && (

@@ -37,7 +37,7 @@ const HeroSection = () => {
                     >
                         {t("tag")}
                     </Badge>
-                    <div className="flex flex-col justify-center items-center gap-8 p-10 bg-gradient-to-br from-info via-transparent to-info rounded-md">
+                    <div className="flex flex-col justify-center items-center gap-8 p-10 bg-gradient-to-br from-second via-transparent to-first rounded-md">
                         <h1 className="font-bold text-white text-center text-pretty text-2xl sm:text-3xl lg:text-5xl">
                             {t("heading")}
                         </h1>
@@ -46,7 +46,7 @@ const HeroSection = () => {
                         </p>
                     </div>
                     <Button
-                        className="flex items-center font-semibold capitalize text-white bg-gradient-to-r from-info to-success hover:scale-105 gap-2 px-10 py-6 transition"
+                        className="flex items-center font-semibold capitalize text-white bg-gradient-to-r from-second to-first hover:scale-105 gap-2 px-10 py-6 transition"
                         onClick={redirectsToSignIn}
                     >
                         <Wallet size={20} color="white" strokeWidth={1.5} />

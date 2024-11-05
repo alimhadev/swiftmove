@@ -10,7 +10,7 @@ const AdvantagesSection = () => {
     return (
         <section
             id="advantages"
-            className="flex justify-center bg-gradient-to-r from-success/5 via-white to-success/5 w-full px-5 sm:px-14 py-20 shadow-xl"
+            className="flex justify-center bg-gradient-to-r from-first/5 via-white to-first/5 w-full px-5 sm:px-14 py-20 shadow-xl"
         >
             <div className="container flex flex-col items-center w-full gap-10">
                 <div className="flex flex-col items-center gap-4">

@@ -11,16 +11,25 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useTranslations } from "next-intl";
 import TelegramIcon from "@/public/assets/telegram-icon.svg";
+import Image from "next/image";
+import swiftmoveLogo from "@/public/assets/swiftmove-logo.png";
 
 const Footer = () => {
     const t = useTranslations("SwiftMovePage.Footer");
 
     return (
-        <footer className="flex justify-center bg-info text-primary-foreground w-full px-5 sm:px-14 pt-20 pb-10">
+        <footer className="flex justify-center bg-first text-primary-foreground w-full px-5 sm:px-14 pt-20 pb-10">
             <div className="container flex flex-col gap-20">
                 <div className="flex flex-wrap justify-between gap-20 w-full">
                     <div className="flex flex-col gap-4">
-                        <h2 className="font-bold text-2xl">SwiftMove</h2>
+                        <h2 className="flex items-center gap-[2px] font-bold text-2xl">
+                            <Image
+                                src={swiftmoveLogo}
+                                alt="swiftmove logo"
+                                width={65}
+                            />
+                            SwiftMove
+                        </h2>
                         <q>
                             &nbsp;<b>Rapide</b> sur la route, <b>rentable</b>{" "}
                             dans vos poches&nbsp;

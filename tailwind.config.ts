@@ -16,7 +16,8 @@ const config: Config = {
             colors: {
                 success: "#22c55e",
                 danger: "#ef4444",
-                info: "#3b82f6",
+                first: "#268EC5",
+                second: "#174275",
                 background: "hsl(var(--background))",
                 foreground: "hsl(var(--foreground))",
                 card: {

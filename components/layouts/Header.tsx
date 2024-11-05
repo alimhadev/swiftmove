@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import LanguagesSelect from "../selects/LanguagesSelect";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import swiftmoveLogo from "@/public/assets/swiftmove-logo.png";
 
 const Header = () => {
     const [toggleMenu, setToggleMenu] = useState(false);
@@ -68,8 +70,15 @@ const Header = () => {
         >
             <div className="container flex justify-between items-center w-full px-5">
                 <div className="flex items-center gap-5">
-                    <h1 className="font-bold text-xl">SwiftMove</h1>
-                    <div className="hidden min-[1125px]:block">
+                    <h1 className="flex items-center gap-[2px] font-bold text-xl">
+                        <Image
+                            src={swiftmoveLogo}
+                            alt="swiftmove logo"
+                            width={50}
+                        />
+                        SwiftMove
+                    </h1>
+                    <div className="hidden xl:block">
                         <LanguagesSelect />
                     </div>
                 </div>
@@ -85,15 +94,15 @@ const Header = () => {
                             </Link>
                         ))}
                     </nav>
-                    <div className="hidden min-[1125px]:flex gap-3">
+                    <div className="hidden xl:flex gap-3">
                         <Button
-                            className="bg-info hover:bg-info hover:scale-105 transition"
+                            className="bg-second hover:bg-second hover:scale-105 transition"
                             onClick={redirectsToSignUp}
                         >
                             {t("button1 text")}
                         </Button>
                         <Button
-                            className="flex items-center capitalize bg-gradient-to-r from-info to-success hover:scale-105 gap-2 transition"
+                            className="flex items-center capitalize bg-gradient-to-r from-second to-first hover:scale-105 gap-2 transition"
                             onClick={redirectsToSignIn}
                         >
                             <Wallet size={20} color="white" strokeWidth={1.5} />
@@ -102,7 +111,7 @@ const Header = () => {
                     </div>
                 </div>
                 <motion.button
-                    className="block min-[1125px]:hidden"
+                    className="block xl:hidden"
                     onClick={() => setToggleMenu((prev) => !prev)}
                     whileTap={{ scale: 0.9 }}
                 >
@@ -115,7 +124,7 @@ const Header = () => {
                         scale: toggleMenu ? 1 : 0.95,
                     }}
                     transition={{ duration: 0.2, ease: "easeIn" }}
-                    className={`absolute right-0 top-full min-[1125px]:hidden flex flex-col items-center bg-white border gap-3 p-10 rounded-md z-10`}
+                    className={`absolute right-0 top-full xl:hidden flex flex-col items-center bg-white border gap-3 p-10 rounded-md z-10`}
                 >
                     <nav className="flex min-[750px]:hidden flex-col gap-4">
                         {navLinks.map((link, index) => (
@@ -123,23 +132,24 @@ const Header = () => {
                                 key={index}
                                 href={link.href}
                                 className="text-center"
+                                onClick={(e) => scrollToSection(e, link.id)}
                             >
                                 {link.text}
                             </Link>
                         ))}
                     </nav>
-                    <div className="flex min-[1125px]:hidden flex-col gap-3">
+                    <div className="flex xl:hidden flex-col gap-3">
                         <div className="w-full">
                             <LanguagesSelect />
                         </div>
                         <Button
-                            className="bg-info hover:bg-info hover:scale-105 transition"
+                            className="bg-first hover:bg-first hover:scale-105 transition"
                             onClick={redirectsToSignUp}
                         >
                             {t("button1 text")}
                         </Button>
                         <Button
-                            className="flex items-center capitalize bg-gradient-to-r from-info to-success hover:scale-105 gap-2 transition"
+                            className="flex items-center capitalize bg-gradient-to-r from-second to-first hover:scale-105 gap-2 transition"
                             onClick={redirectsToSignIn}
                         >
                             <Wallet size={20} color="white" strokeWidth={1.5} />

@@ -124,7 +124,7 @@ const OpportunitiesSection = () => {
                                                 price: t("card3.price"),
                                                 duration: t("card3.duration"),
                                                 span: (chunks) => (
-                                                    <span className="font-bold text-xl text-transparent bg-gradient-to-r from-info to-success bg-clip-text">
+                                                    <span className="font-bold text-xl text-transparent bg-gradient-to-r from-second to-first bg-clip-text">
                                                         {chunks}
                                                     </span>
                                                 ),
@@ -138,7 +138,7 @@ const OpportunitiesSection = () => {
                                                     "card3.advantages.incomePercentage"
                                                 ),
                                                 span: (chunks) => (
-                                                    <span className="font-bold text-xl text-transparent bg-gradient-to-r from-info to-success bg-clip-text">
+                                                    <span className="font-bold text-xl text-transparent bg-gradient-to-r from-second to-first bg-clip-text">
                                                         {chunks}
                                                     </span>
                                                 ),
@@ -193,7 +193,7 @@ const OpportunitiesSection = () => {
                                                 price: t("card5.price"),
                                                 duration: t("card5.duration"),
                                                 span: (chunks) => (
-                                                    <span className="font-bold text-xl text-transparent bg-gradient-to-r from-info to-success bg-clip-text">
+                                                    <span className="font-bold text-xl text-transparent bg-gradient-to-r from-second to-first bg-clip-text">
                                                         {chunks}
                                                     </span>
                                                 ),
@@ -207,7 +207,7 @@ const OpportunitiesSection = () => {
                                                     "card5.advantages.incomePercentage"
                                                 ),
                                                 span: (chunks) => (
-                                                    <span className="font-bold text-xl text-transparent bg-gradient-to-r from-info to-success bg-clip-text">
+                                                    <span className="font-bold text-xl text-transparent bg-gradient-to-r from-second to-first bg-clip-text">
                                                         {chunks}
                                                     </span>
                                                 ),
