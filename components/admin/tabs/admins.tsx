@@ -16,18 +16,18 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getUsers, setUserRole } from '@/lib/api'
+import { getAdmins, setUserRole } from '@/lib/api'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
 
 
-export default function Investor() {
+export default function Admins() {
     const { toast } = useToast();
     const [searchTerm, setSearchTerm] = useState('')
     const queryClient = useQueryClient()
-    const { data: users = [] } = useQuery({ queryKey: ['users'], queryFn: getUsers })
+    const { data: users = [] } = useQuery({ queryKey: ['users'], queryFn: getAdmins })
 
     const updateRoleMutation = useMutation({
         mutationFn: setUserRole,

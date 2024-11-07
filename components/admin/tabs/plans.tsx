@@ -6,8 +6,6 @@ import { Input } from "@/components/ui/input";
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -36,7 +34,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { PlusIcon, Pencil, Trash2, ArrowLeft } from "lucide-react";
+import {     Pencil, Trash2, ArrowLeft } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -50,6 +48,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast"
 import {
     getVehicles,
     getInvestmentPlans,
@@ -66,8 +65,8 @@ const planFormSchema = z.object({
     }),
     amount: z.number().min(0),
     incomePercentage: z.number().min(0).max(100),
-    durationInMonth: z.number().min(0),
-    durationInDay: z.number().min(0),
+    durationInMonth: z.number().min(0).default(0),
+    durationInDay: z.number().min(0).default(0),
     minimumWithdrawalAmount: z.number().min(0),
     vehicleId: z.string().min(1, {
         message: "Veuillez sélectionner un véhicule.",
@@ -79,6 +78,7 @@ const planFormSchema = z.object({
 type PlanFormValues = z.infer<typeof planFormSchema>;
 
 export default function Plans() {
+    const {toast} = useToast();
     const queryClient = useQueryClient();
     const [editingPlan, setEditingPlan] = useState<PlanFormValues | null>(null);
     const { data: vehicles, isLoading } = useQuery({
@@ -95,6 +95,11 @@ export default function Plans() {
         mutationFn: createInvestmentPlan,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["investmentPlans"] });
+            toast({
+                title: "Plan créé avec succès",
+                description: "Le plan a été créé avec succès",
+                variant: "default"
+            });
         },
     });
 
@@ -103,12 +108,20 @@ export default function Plans() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["investmentPlans"] });
             setEditingPlan(null);
+            toast({
+                title: "Plan modifié avec succès",
+                description: "Le plan a été modifié avec succès",
+            });
         },
     });
     const deleteInvestmentPlanMutation = useMutation({
         mutationFn: deleteInvestmentPlan,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["investmentPlans"] });
+            toast({
+                title: "Plan supprimé avec succès",
+                description: "Le plan a été supprimé avec succès",
+            });
         },
     });
 
@@ -268,7 +281,7 @@ export default function Plans() {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
+                            {/* <FormField
                                 control={planForm.control}
                                 name="durationInDay"
                                 render={({ field }) => (
@@ -292,7 +305,7 @@ export default function Plans() {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
+                            /> */}
                             <FormField
                                 control={planForm.control}
                                 name="minimumWithdrawalAmount"
@@ -385,7 +398,7 @@ export default function Plans() {
                                 <TableHead>Montant</TableHead>
                                 <TableHead>Retour (%)</TableHead>
                                 <TableHead>Durée (mois)</TableHead>
-                                <TableHead>Durée (jours)</TableHead>
+                                {/* <TableHead>Durée (jours)</TableHead> */}
                                 <TableHead>Min. retrait</TableHead>
                                 <TableHead>Véhicule</TableHead>
                                 <TableHead>Actions</TableHead>
@@ -402,7 +415,7 @@ export default function Plans() {
                                     <TableCell>
                                         {plan.durationInMonth}
                                     </TableCell>
-                                    <TableCell>{plan.durationInDay}</TableCell>
+                                    {/* <TableCell>{plan.durationInDay}</TableCell> */}
                                     <TableCell>
                                         {plan.minimumWithdrawalAmount}
                                     </TableCell>

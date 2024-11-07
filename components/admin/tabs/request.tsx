@@ -31,24 +31,6 @@ import { useToast } from "@/hooks/use-toast"
 import { getServerUrl } from '@/lib/utils'
 
 
-type User = {
-    id: number
-    firstname: string
-    lastname: string
-    email: string
-    avatar: string
-    solde: number
-    createdAt: string
-    updatedAt: string
-    emailVerificationToken: string | null
-    isVerified: boolean
-    tokenExpiresAt: string
-    phoneNumber: string
-    createdBy: string | null
-    updatedBy: string | null
-    isAdmin: boolean
-    totalInvestments: number
-}
 
 const UserRequests = () => {
     const serverUrl = getServerUrl()

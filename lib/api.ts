@@ -61,3 +61,5 @@ export const requestPasswordReset = (email: string): Promise<any> => apiClient(`
 export const resetPassword = (payload: { password: string, token: string, email: string }): Promise<any> => apiClient(`/reset-password`, 'POST', payload);
 export const getUserWithdrawalRequests = (): Promise<Withdrawal[]> => apiClient<Withdrawal[]>('/withdrawals-by-user');
 export const getUserDepositRequests = (): Promise<Deposit[]> => apiClient<Deposit[]>('/deposits-by-user');
+export const setUserRole = (id: number): Promise<any> => apiClient(`/set-admin/${id}`, 'POST');
+export const getAdmins = (): Promise<User[]> => apiClient<User[]>('/admins-list');

@@ -27,11 +27,12 @@ import {
 } from "../ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { signin } from "@/action/auth";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function CarteConnexion() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { toast } = useToast();
+    const router = useRouter();
     type formSchema = z.infer<typeof signInSchema>;
     const form = useForm<formSchema>({
         resolver: zodResolver(signInSchema),
@@ -40,7 +41,38 @@ export default function CarteConnexion() {
             password: "",
         },
     });
-
+    const onSubmit = async (values: z.infer<typeof signInSchema>) => {
+        setIsLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append('email', values.email);
+            formData.append('password', values.password);
+            
+            const signinData = await signin(formData);
+            if (signinData.error) {
+                toast({
+                    title: "Erreur lors de la connexion",
+                    description: signinData.message,
+                    variant: "destructive",
+                });
+                return;
+            }
+            const { token, user } = signinData;
+            localStorage.setItem("token", token);
+            if (user?.isAdmin) {
+                router.push("/admin");
+            }
+            router.push("/dashboard");
+        } catch (error) {
+            toast({
+                title: "Erreur lors de la connexion",
+                description: "Une erreur est survenue, veuillez réessayer",
+                variant: "destructive",
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }
     return (
         <Card className="w-full min-[400px]:w-[400px]">
             <CardHeader>
@@ -49,39 +81,39 @@ export default function CarteConnexion() {
             <CardContent>
                 <Form {...form}>
                     <form
-                        //  onSubmit={form.handleSubmit(onSubmit)}
-                        action={async (formData) => {
-                            const signinData = await signin(formData);
-                            if (signinData.error) {
-                                toast({
-                                    title: "Erreur lors de la connexion",
-                                    description: signinData.message,
-                                    variant: "destructive",
-                                });
-                                return;
-                            }
-                            const { token, user } = signinData;
-                            localStorage.setItem("token", token);
-                            if (user?.isAdmin) {
-                                redirect("/admin");
-                            }
-                            redirect("/dashboard");
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        // action={async (formData) => {
+                        //     const signinData = await signin(formData);
+                        //     if (signinData.error) {
+                        //         toast({
+                        //             title: "Erreur lors de la connexion",
+                        //             description: signinData.message,
+                        //             variant: "destructive",
+                        //         });
+                        //         return;
+                        //     }
+                        //     const { token, user } = signinData;
+                        //     localStorage.setItem("token", token);
+                        //     if (user?.isAdmin) {
+                        //         redirect("/admin");
+                        //     }
+                        //     redirect("/dashboard");
 
-                            // if (signinData) {
-                            //     const { user, token } = signinData
-                            //     setUser(user)
+                        //     // if (signinData) {
+                        //     //     const { user, token } = signinData
+                        //     //     setUser(user)
 
-                            //     localStorage.setItem("token", token.token);
-                            //     localStorage.setItem("user", JSON.stringify(user));
-                            //     if (user.isAdmin) {
-                            //         redirect('/admin')
-                            //     } else {
-                            //         redirect('/dashboard')
-                            //     }
+                        //     //     localStorage.setItem("token", token.token);
+                        //     //     localStorage.setItem("user", JSON.stringify(user));
+                        //     //     if (user.isAdmin) {
+                        //     //         redirect('/admin')
+                        //     //     } else {
+                        //     //         redirect('/dashboard')
+                        //     //     }
 
-                            // }
-                            // redirect('/dashboard')
-                        }}
+                        //     // }
+                        //     // redirect('/dashboard')
+                        // }}
                     >
                         <div className="grid w-full items-center gap-4">
                             <FormField

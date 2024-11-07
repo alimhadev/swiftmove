@@ -30,6 +30,15 @@ export const NavItems = ( {setActiveTab, activeTab}:{setActiveTab: React.Dispatc
         <Separator />
         <Link
             href="#"
+            onClick={() => setActiveTab("admins")}
+            className={`flex items-center px-4 py-3 ${activeTab === "admins" ? "bg-gray-200" : ""}`}
+        >
+            <Users className="mr-3 h-5 w-5" />
+            Admins
+        </Link>
+        <Separator />
+        <Link
+            href="#"
             onClick={() => setActiveTab("requests")}
             className={`flex items-center px-4 py-3 ${activeTab === "requests" ? "bg-gray-200" : ""}`}
         >
@@ -54,5 +63,6 @@ export const NavItems = ( {setActiveTab, activeTab}:{setActiveTab: React.Dispatc
             <NotebookText  className="mr-3 h-5 w-5" />
             Plans
         </Link>
+     
     </>
 );

@@ -86,10 +86,12 @@ const Header = ({ setActiveTab, activeTab }: { setActiveTab: React.Dispatch<Reac
                         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                             <Avatar>
                                 <AvatarImage
-                                    src="https://github.com/0xKaizendev.png"
+                                    src=""
                                     alt="@shadcn"
                                 />
-                                <AvatarFallback>CN</AvatarFallback>
+                                <AvatarFallback>
+                                    <User className="h-4 w-4" />
+                                </AvatarFallback>
                             </Avatar>
                         </Button>
                     </DropdownMenuTrigger>

@@ -19,6 +19,7 @@ import Investor from '../admin/tabs/investors';
 import UserRequests from '../admin/tabs/request';
 import Vehicles from '../admin/tabs/vehicles';
 import Plans from "../admin/tabs/plans";
+import Admins from "../admin/tabs/admins";
 
 
 
@@ -50,6 +51,8 @@ export default function AdminDashboard() {
                     {activeTab === "overview" && <Overview />}
 
                     {activeTab === "investors" && <Investor  />}
+
+                    {activeTab === "admins" && <Admins />}
 
                     {activeTab === "requests" && <UserRequests  />}
 
