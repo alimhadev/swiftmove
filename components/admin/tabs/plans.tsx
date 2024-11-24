@@ -64,7 +64,7 @@ const planFormSchema = z.object({
             "Veuillez entrer un nom de plan valide de 4 caractères minimum.",
     }),
     amount: z.number().min(0),
-    incomePercentage: z.number().min(0).max(100),
+    incomePercentage: z.number().min(0),
     durationInMonth: z.number().min(0).default(0),
     durationInDay: z.number().min(0).default(0),
     minimumWithdrawalAmount: z.number().min(0),

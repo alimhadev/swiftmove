@@ -19,6 +19,7 @@ type User = {
     createdBy: string | null;
     updatedBy: string | null;
     isAdmin: boolean;
+    isSuperAdmin: boolean;
     totalInvestments: number;
 }
 type InvestmentPlan = {

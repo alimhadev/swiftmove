@@ -77,11 +77,11 @@ const PlanDetailsDialog = ({ plan }: { plan: Plan }) => (
     </Dialog>
 )
 
-const Dashboard = ({ setActiveTab,}: { setActiveTab: React.Dispatch<React.SetStateAction<string>> }) => {
+const Dashboard = ({ setActiveTab, }: { setActiveTab: React.Dispatch<React.SetStateAction<string>> }) => {
     const { user } = useAppContext()
     const { toast } = useToast()
     const { data: userIncreases } = useQuery({ queryKey: ['increase'], queryFn: userIncrease })
-    const { data: userActivePlans,  } = useQuery({ queryKey: ['userActivePlans'], queryFn: getUserActivePlans })
+    const { data: userActivePlans, } = useQuery({ queryKey: ['userActivePlans'], queryFn: getUserActivePlans })
     const queryClient = useQueryClient()
     const subscribeMutation = useMutation({
         mutationFn: subscribeToPlan,
@@ -188,7 +188,8 @@ const Dashboard = ({ setActiveTab,}: { setActiveTab: React.Dispatch<React.SetSta
                                     <CardTitle>{plan.investmentPlan.name} | {plan.investmentPlan.vehicle?.name}</CardTitle>
                                     <CardDescription>
                                         Capital: {plan.investmentPlan.amount} FCFA |
-                                        Rendement quotidien: {plan.investmentPlan.incomePercentage * 100}%
+                                        Rendement Total: {plan.investmentPlan.incomePercentage}% <br />
+                                        Rendement quotidien: {(plan.investmentPlan.incomePercentage / (plan.investmentPlan.durationInMonth * 26)).toFixed(2)}%
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>

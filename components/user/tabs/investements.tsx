@@ -6,13 +6,14 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/card"
+import { Button } from '@/components/ui/button'
+import { Progress } from "@/components/ui/progress"
 import { getInvestmentPlans, subscribeToPlan } from '@/lib/api'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useToast } from "@/hooks/use-toast"
 
-const Investements = () => {
+const Investments = () => {
     const { toast } = useToast()
     const { data: investmentPlans, isLoading: isLoadingInvestmentPlans } = useQuery({ queryKey: ['investmentPlans'], queryFn: getInvestmentPlans })
     const queryClient = useQueryClient()
@@ -20,7 +21,7 @@ const Investements = () => {
         mutationFn: subscribeToPlan,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['investmentPlans'] })
-            // TODO:invalidate user query
+            // TODO: invalidate user query
             toast({
                 title: "Souscription effectuée",
                 description: "Vous êtes maintenant inscrit à ce plan d'investissement",
@@ -65,15 +66,24 @@ const Investements = () => {
                             <CardTitle>{plan.name} | {plan.vehicle?.name}</CardTitle>
                             <CardDescription>
                                 Capital: {plan.amount} FCFA |
-                                Rendement quotidien: {plan.incomePercentage * 100}%
+                                Rendement Total: {plan.incomePercentage}% <br />
+                                Rendement quotidien: {(plan.incomePercentage / (plan.durationInMonth * 26)).toFixed(2)}%
                             </CardDescription>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="space-y-4">
                             <p>Durée: {plan.durationInMonth} mois</p>
                             <p>Retrait: {plan.minimumWithdrawalAmount} FCFA</p>
-                            <p>
-                                Rendement total: {plan.durationInDay * plan.incomePercentage * 100}%
-                            </p>
+                            {
+                                /**
+                                 *   <div className="space-y-2">
+                                     <div className="flex justify-between text-sm">
+                                        <span>Progression</span>
+                                        <span>{plan.progress}%</span>
+                                    </div> 
+                                    <Progress value={plan.created_at} className="w-full" />
+                                </div>
+                                 */
+                            }
                         </CardContent>
                         <CardFooter>
                             <Button onClick={async () => await subscribeMutation.mutateAsync({ investmentPlanId: plan.id! })}>
@@ -81,8 +91,9 @@ const Investements = () => {
                             </Button>
                         </CardFooter>
                     </Card>
-                ))}
-            </div>
+                ))
+                }
+            </div >
         )
     }
 
@@ -96,4 +107,5 @@ const Investements = () => {
     )
 }
 
-export default Investements
+export default Investments
+

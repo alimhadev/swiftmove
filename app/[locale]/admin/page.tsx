@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 export default async function page() {
 
     const session = await checkSession()
-    if (!session.isAdmin) {
+    console.log(session)
+    if (!session.isAdmin && !session.isSuperAdmin) {
         return redirect('/dashboard')
     }
     return (

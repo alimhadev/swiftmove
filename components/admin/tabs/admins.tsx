@@ -51,7 +51,7 @@ export default function Admins() {
     return (
         <Card className="w-full">
             <CardHeader>
-                <CardTitle>Liste des investisseurs</CardTitle>
+                <CardTitle>Liste des administrateurs</CardTitle>
                 <div className="flex items-center space-x-2">
                     <Input
                         type="text"
