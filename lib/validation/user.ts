@@ -12,9 +12,7 @@ export const userRegisterSchema = z.object({
     password: z.string().min(8, {
         message: "Le mot de passe doit contenir au moins 8 caractères.",
     }),
-    phoneNumber: z.string().min(8, {
-        message: "Le numer de telephone doit être valide."
-    }),
+
     // confirmPassword: z.string().min(8, {
     //     message: "Password must be at least 6 characters.",
     // }),

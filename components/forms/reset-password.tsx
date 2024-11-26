@@ -12,7 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Lock, AlertCircle, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import { resetPassword } from "@/lib/api"
-
+import { useRouter } from "next/navigation"
 const resetPasswordSchema = z.object({
   password: z
     .string()
@@ -26,6 +26,8 @@ const resetPasswordSchema = z.object({
 export default function ResetPassword({ token, email }: { token: string, email: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof resetPasswordSchema>>({
     resolver: zodResolver(resetPasswordSchema),
@@ -44,6 +46,8 @@ export default function ResetPassword({ token, email }: { token: string, email: 
       await resetPassword({ password: values.password, token: token, email: email })
 
       setSubmitStatus("success")
+
+      router.push("/sign-in")
     } catch (error) {
       setSubmitStatus("error")
     } finally {

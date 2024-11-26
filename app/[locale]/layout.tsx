@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-
+import { QueryProvider } from "@/components/client-provider";
 export default async function LocaleLayout({
     children,
 }: Readonly<{
@@ -15,10 +15,12 @@ export default async function LocaleLayout({
 
     return (
         <NextIntlClientProvider messages={messages}>
-            <AppProvider>
+            <QueryProvider>
+                <AppProvider>
 
-                {children}
-            </AppProvider>
+                    {children}
+                </AppProvider>
+            </QueryProvider>
         </NextIntlClientProvider>
     );
 }

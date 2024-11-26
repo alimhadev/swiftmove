@@ -35,11 +35,11 @@ const Header = ({ setActiveTab, activeTab }: { setActiveTab: React.Dispatch<Reac
                     <SheetContent side="left" className="w-64">
                         <div className="flex flex-col gap-5 py-4">
                             <h2 className="text-2xl font-bold mb-3">
-                                MonInvest
+                            SwiftMove
                             </h2>
                             <div className="relative flex justify-center items-center text-sm gap-2 mr-4 font-medium bg-white py-3 px-2 rounded z-20 after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:w-[calc(100%)] after:h-[calc(100%)] after:bg-white after:rounded after:-z-10 before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-[calc(100%+4px)] before:h-[calc(100%+4px)]  before:bg-gradient-to-r before:from-blue-500 before:to-green-500 before:rounded before:-z-10">
                                 <span>Solde:</span>
-                                <span className="font-bold">$2,500.00</span>
+                                <span className="font-bold">{user?.solde} FCFA</span>
                             </div>
                             <nav>
                                 <NavItems activeTab={activeTab} setActiveTab={setActiveTab} />

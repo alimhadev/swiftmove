@@ -27,8 +27,10 @@ import {
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-
+import { useToast } from "@/hooks/use-toast"
 export default function RegisterForm() {
+    console.log("register form")
+    const { toast } = useToast();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
@@ -41,7 +43,6 @@ export default function RegisterForm() {
             password: "",
             confirmPassword: "",
             solde: "0",
-            phoneNumber: "",
         },
     });
     const { watch } = form;
@@ -73,10 +74,20 @@ export default function RegisterForm() {
                     body: JSON.stringify(values),
                 }
             );
+            console.log("response", response)
 
             if (!response.ok) {
-                throw new Error("Error registering user");
+                return toast({
+                    title: "Erreur lors de l'inscription",
+                    description: "Une erreur est survenue lors de l'inscription",
+                    variant: "destructive",
+                });
+
             }
+            toast({
+                title: "Inscription réussie",
+                description: "Vous recevrez un email de confirmation",
+            });
             router.push(`/email-confirmation`);
             // const data = await response.json()
             // Handle successful registration (e.g., redirect to login page)
@@ -129,19 +140,6 @@ export default function RegisterForm() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="phoneNumber"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Numéro de téléphone</FormLabel>
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>

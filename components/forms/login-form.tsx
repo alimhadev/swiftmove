@@ -10,9 +10,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { LoaderCircle } from "lucide-react";
-import { getServerUrl } from "@/lib/utils";
+import { LoaderCircle } from 'lucide-react';
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInSchema } from "@/lib/validation/sign-in";
@@ -24,7 +22,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "../ui/form";
+} from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { signin } from "@/action/auth";
 import { useRouter } from "next/navigation";
@@ -33,15 +31,18 @@ export default function CarteConnexion() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { toast } = useToast();
     const router = useRouter();
-    type formSchema = z.infer<typeof signInSchema>;
-    const form = useForm<formSchema>({
+    
+    type FormSchema = z.infer<typeof signInSchema>;
+    
+    const form = useForm<FormSchema>({
         resolver: zodResolver(signInSchema),
         defaultValues: {
             email: "",
             password: "",
         },
     });
-    const onSubmit = async (values: z.infer<typeof signInSchema>) => {
+
+    const onSubmit = async (values: FormSchema) => {
         setIsLoading(true);
         try {
             const formData = new FormData();
@@ -59,10 +60,12 @@ export default function CarteConnexion() {
             }
             const { token, user } = signinData;
             localStorage.setItem("token", token);
-            if (user?.isAdmin) {
+            console.log("user", user)
+            if (user?.isAdmin || user?.isSuperAdmin) {
                 router.push("/admin");
+            } else {
+                router.push("/dashboard");
             }
-            router.push("/dashboard");
         } catch (error) {
             toast({
                 title: "Erreur lors de la connexion",
@@ -73,6 +76,7 @@ export default function CarteConnexion() {
             setIsLoading(false);
         }
     }
+
     return (
         <Card className="w-full min-[400px]:w-[400px]">
             <CardHeader>
@@ -80,108 +84,52 @@ export default function CarteConnexion() {
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        // action={async (formData) => {
-                        //     const signinData = await signin(formData);
-                        //     if (signinData.error) {
-                        //         toast({
-                        //             title: "Erreur lors de la connexion",
-                        //             description: signinData.message,
-                        //             variant: "destructive",
-                        //         });
-                        //         return;
-                        //     }
-                        //     const { token, user } = signinData;
-                        //     localStorage.setItem("token", token);
-                        //     if (user?.isAdmin) {
-                        //         redirect("/admin");
-                        //     }
-                        //     redirect("/dashboard");
-
-                        //     // if (signinData) {
-                        //     //     const { user, token } = signinData
-                        //     //     setUser(user)
-
-                        //     //     localStorage.setItem("token", token.token);
-                        //     //     localStorage.setItem("user", JSON.stringify(user));
-                        //     //     if (user.isAdmin) {
-                        //     //         redirect('/admin')
-                        //     //     } else {
-                        //     //         redirect('/dashboard')
-                        //     //     }
-
-                        //     // }
-                        //     // redirect('/dashboard')
-                        // }}
-                    >
-                        <div className="grid w-full items-center gap-4">
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Email</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Mot de passe</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder=""
-                                                {...field}
-                                                type="password"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            {/* <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    placeholder=""
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="motDePasse">Mot de passe</Label>
-                                <Input
-                                    id="motDePasse"
-                                    name="motDePasse"
-                                    type="password"
-                                    value={motDePasse}
-                                    onChange={(e) =>
-                                        setMotDePasse(e.target.value)
-                                    }
-                                    required
-                                />
-                            </div> */}
-                        </div>
-                        <CardFooter className="flex justify-between mt-4 p-0">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="votre@email.com" {...field} disabled={isLoading} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Mot de passe</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Votre mot de passe"
+                                            {...field}
+                                            type="password"
+                                            disabled={isLoading}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <CardFooter className="flex justify-between p-0">
                             <Button
                                 type="submit"
                                 className="bg-first hover:bg-first/90 w-full"
                                 disabled={isLoading}
                             >
-                                {isLoading && (
-                                    <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                {isLoading ? (
+                                    <>
+                                        <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                        Connexion en cours...
+                                    </>
+                                ) : (
+                                    "Se connecter"
                                 )}
-                                Se connecter
                             </Button>
                         </CardFooter>
                     </form>
@@ -190,3 +138,4 @@ export default function CarteConnexion() {
         </Card>
     );
 }
+

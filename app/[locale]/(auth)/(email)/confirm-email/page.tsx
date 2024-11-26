@@ -6,8 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { CheckCircle } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import InvalidEmailVerification from "@/components/cards/invalid-email-verification"
-import { notFound } from "next/navigation"
+import { notFound, redirect, useRouter } from "next/navigation"
 export default function EmailVerified({
   searchParams,
 }: {
@@ -17,23 +16,11 @@ export default function EmailVerified({
   if (!confirmationToken) {
     return notFound()
   }
+  const router = useRouter()
   const [confirmationStatus, setConfirmationStatus] = useState(false)
   const [canRequestToken, setCanRequestToken] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [userEmail, setUserEmail] = useState("")
-
-  const handleResendVerification = async () => {
-    if (userEmail) {
-      const request = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/verification-by-email?email=${userEmail}`, {
-        method: "POST"
-      })
-      if (request.status == 201) {
-        return true
-      } else {
-        return false
-      }
-    }
-  }
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -82,8 +69,10 @@ export default function EmailVerified({
       </div>
     )
   }
+  if (!confirmationStatus ) {
+    redirect("/email-confirmation")
+  }
 
-  if (confirmationStatus) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <Card className="w-[350px]">
@@ -116,9 +105,6 @@ export default function EmailVerified({
         </Card>
       </div>
     )
-  } else {
-    return (<InvalidEmailVerification canRequestToken={canRequestToken} resendTokenFn={handleResendVerification} />)
   }
 
 
-}
