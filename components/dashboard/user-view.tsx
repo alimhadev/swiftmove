@@ -8,13 +8,13 @@ import Transactions from "../user/tabs/transactions";
 import Investements from "../user/tabs/investements";
 
 
-export default function UserDashboard() {
+export default function UserDashboard({ user }: { user: User }) {
     const [activeTab, setActiveTab] = useState("dashboard");
 
     return (
         <div className="flex flex-col h-screen bg-gray-100">
             {/* Header */}
-            <Header activeTab={activeTab} setActiveTab={setActiveTab}  />
+            <Header activeTab={activeTab} setActiveTab={setActiveTab} user={user} />
 
             {/* Main content */}
             <div className="flex flex-1 overflow-hidden">
@@ -34,7 +34,7 @@ export default function UserDashboard() {
                         {activeTab === "profile" && "Profil"}
                     </h1>
                     {activeTab === "dashboard" && (
-                        <Dashboard setActiveTab={setActiveTab} />
+                        <Dashboard setActiveTab={setActiveTab} user={user} />
                     )}
                     {activeTab === "transactions" && (
                         <Transactions  />

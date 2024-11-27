@@ -17,6 +17,7 @@ import {
     DialogFooter,
     DialogClose,
 } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 import {
     Form,
     FormControl,
@@ -48,10 +49,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 const Vehicles = () => {
+    const { toast } = useToast()
     const createVehicleFormSchema = z.object({
-        name: z.string().min(4, {
+        name: z.string().min(2, {
             message:
-                "Veuillez entrer un nom de véhicule valide de 4 caractères minimum.",
+                "Veuillez entrer un nom de véhicule valide de 2 caractères minimum.",
         }),
     });
 
@@ -70,13 +72,26 @@ const Vehicles = () => {
         mutationFn: createVehicles,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["vehicles"] });
+            toast({
+                title: "Véhicule créé avec succès",
+                description: "Le véhicule a été créé avec succès",
+                variant: "default"
+            });
         },
+        onError: () => {
+            toast({
+                title: "Erreur lors de la création du véhicule",
+                description: "Veuillez réessayer plus tard",
+                variant: "destructive"
+            });
+        }
     });
 
     const createVehicleOnSubmit = async (
         values: z.infer<typeof createVehicleFormSchema>
     ) => {
         await createVehiclesMutation.mutateAsync(values.name);
+        createVehicleForm.reset()
     };
 
     const updateVehicleForm = useForm<z.infer<typeof createVehicleFormSchema>>({
@@ -89,7 +104,19 @@ const Vehicles = () => {
         mutationFn: updateVehicle,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["vehicles"] });
+            toast({
+                title: "Véhicule modifié avec succès",
+                description: "Le véhicule a été modifié avec succès",
+                variant: "default"
+            });
         },
+        onError: () => {
+            toast({
+                title: "Erreur lors de la modification du véhicule",
+                description: "Veuillez réessayer plus tard",
+                variant: "destructive"
+            });
+        }
     });
 
     const updateVehicleOnSubmit = async (
@@ -97,6 +124,7 @@ const Vehicles = () => {
         id: string
     ) => {
         await updateVehiclesMutation.mutateAsync({ name: values.name, id });
+        updateVehicleForm.reset()
     };
 
     const deleteVehiclesMutation = useMutation({
@@ -127,13 +155,10 @@ const Vehicles = () => {
                                         <FormLabel>Nom du véhicule</FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="shadcn"
+                                                placeholder="Voiture"
                                                 {...field}
                                             />
                                         </FormControl>
-                                        <FormDescription>
-                                            Le nom du véhicule
-                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -168,7 +193,7 @@ const Vehicles = () => {
                                         {/* Edit button */}
                                         <Dialog>
                                             <DialogTrigger asChild>
-                                                <Button className="bg-first hover:bg-first/90 h-8 w-8 p-0">
+                                                <Button className="bg-first hover:bg-first/90 h-8 w-8 p-0" onClick={() => updateVehicleForm.setValue('name', vehicle.name)}>
                                                     <Pencil className="h-4 w-4" />
                                                 </Button>
                                             </DialogTrigger>
@@ -209,7 +234,7 @@ const Vehicles = () => {
                                                                     </FormLabel>
                                                                     <FormControl>
                                                                         <Input
-                                                                            placeholder="shadcn"
+                                                                            placeholder="Voiture"
                                                                             {...field}
                                                                         />
                                                                     </FormControl>

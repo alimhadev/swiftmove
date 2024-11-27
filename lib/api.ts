@@ -28,7 +28,7 @@ export const apiClient = async <T>(endpoint: string, method: string = "GET", bod
         }
         return await response.json();
     } catch (error: any) {
-        throw new Error(`${error.message}`);
+        throw new Error(`${error}`);
     }
 };
 
@@ -57,8 +57,7 @@ export const getTotalInvestments = (): Promise<{ totalInvestments: number }> => 
 export const getWithdrawalRequests = (): Promise<Withdrawal[]> => apiClient<Withdrawal[]>('/withdrawals');
 
 export const approveWithdrawal = (id: number): Promise<any> => apiClient(`/validate-withdrawal/${id}`, 'POST');
-export const requestPasswordReset = (email: string): Promise<any> => apiClient(`/forgot-password`, 'POST', { email });
-export const resetPassword = (payload: { password: string, token: string, email: string }): Promise<any> => apiClient(`/reset-password`, 'POST', payload);
+
 export const getUserWithdrawalRequests = (): Promise<Withdrawal[]> => apiClient<Withdrawal[]>('/withdrawals-by-user');
 export const getUserDepositRequests = (): Promise<Deposit[]> => apiClient<Deposit[]>('/deposits-by-user');
 export const setUserRole = (id: number): Promise<any> => apiClient(`/set-admin/${id}`, 'POST');

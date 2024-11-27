@@ -1,9 +1,14 @@
 
 import UserDashboard from "@/components/dashboard/user-view";
-import { checkSession, } from "@/lib/session";
+import { getUser, } from "@/lib/session";
+import { redirect } from "next/navigation";
 export default async function page() {
-    await checkSession()
+    const user = await getUser()
+    console.log("dashboard", user)
+    if (!user) {
+        return redirect('/sign-in')
+    }
     return (
-        <UserDashboard />
+        <UserDashboard user={user} />
     );
 }

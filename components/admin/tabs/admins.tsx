@@ -21,11 +21,12 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
-
+import { AdminDetailsModal } from '@/components/admin/admin-details-modal'
 
 export default function Admins() {
     const { toast } = useToast();
     const [searchTerm, setSearchTerm] = useState('')
+    const [selectedUser, setSelectedUser] = useState<User | null>(null)
     const queryClient = useQueryClient()
     const { data: users = [] } = useQuery({ queryKey: ['users'], queryFn: getAdmins })
 
@@ -40,12 +41,16 @@ export default function Admins() {
         },
     })
 
-    const filteredUsers = users.filter(user => 
+    const filteredUsers = users.filter(user =>
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
-    const handleRoleToggle = (userId: number, ) => {
+    const handleRoleToggle = (userId: number) => {
         updateRoleMutation.mutate(userId)
+    }
+
+    const handleDetailsClick = (user: User) => {
+        setSelectedUser(user)
     }
 
     return (
@@ -60,7 +65,7 @@ export default function Admins() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="max-w-sm"
                     />
-                    <Button 
+                    <Button
                         onClick={() => setSearchTerm('')}
                         variant="outline"
                     >
@@ -76,6 +81,7 @@ export default function Admins() {
                             <TableHead>Email</TableHead>
                             <TableHead>Total investi</TableHead>
                             <TableHead>Admin</TableHead>
+                            <TableHead>Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -93,15 +99,32 @@ export default function Admins() {
                                 <TableCell>
                                     <Switch
                                         checked={investor.isAdmin}
-                                        onCheckedChange={() => handleRoleToggle(investor.id!)}
+                                        onCheckedChange={() => handleRoleToggle(investor.id)}
                                         aria-label={`Toggle admin role for ${investor.firstname} ${investor.lastname}`}
                                     />
+                                </TableCell>
+                                <TableCell>
+                                    <Button
+                                        onClick={() => handleDetailsClick(investor)}
+                                        variant="outline"
+                                        size="sm"
+                                    >
+                                        Détails
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </CardContent>
+            {selectedUser && (
+                <AdminDetailsModal
+                    user={selectedUser}
+                    isOpen={!!selectedUser}
+                    onClose={() => setSelectedUser(null)}
+                />
+            )}
         </Card>
     )
 }
+

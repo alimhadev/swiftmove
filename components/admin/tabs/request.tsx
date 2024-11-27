@@ -22,6 +22,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogFooter,
+    DialogDescription,
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
 import { Eye } from 'lucide-react'
@@ -29,8 +31,6 @@ import { getDepositRequests, approveDeposit, getWithdrawalRequests, approveWithd
 import { format } from 'date-fns'
 import { useToast } from "@/hooks/use-toast"
 import { getServerUrl } from '@/lib/utils'
-
-
 
 const UserRequests = () => {
     const serverUrl = getServerUrl()
@@ -105,13 +105,34 @@ const UserRequests = () => {
                                     {request.isValidated ? 'Approuvé' : 'En attente'}
                                 </TableCell>
                                 <TableCell>
-                                    <Button 
-                                        size="sm" 
-                                        onClick={() => approveMutation.mutate({ id: request.id, type: request.type })}
-                                        disabled={request.isValidated || approveMutation.isPending}
-                                    >
-                                        {approveMutation.isPending ? 'Approbation...' : 'Approuver'}
-                                    </Button>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button 
+                                                size="sm" 
+                                                disabled={request.isValidated || approveMutation.isPending}
+                                            >
+                                                {approveMutation.isPending ? 'Approbation...' : 'Approuver'}
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>Confirmer l'approbation</DialogTitle>
+                                                <DialogDescription>
+                                                    Êtes-vous sûr de vouloir approuver cette demande de {request.type === 'deposit' ? 'dépôt' : 'retrait'} ?
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <DialogFooter>
+                                                <Button variant="outline" onClick={() => {}}>Annuler</Button>
+                                                <Button 
+                                                    onClick={() => {
+                                                        approveMutation.mutate({ id: request.id, type: request.type })
+                                                    }}
+                                                >
+                                                    Confirmer
+                                                </Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
                                 </TableCell>
                                 <TableCell>
                                     <Dialog>
@@ -168,3 +189,4 @@ const UserRequests = () => {
 }
 
 export default UserRequests
+

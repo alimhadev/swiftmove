@@ -4,14 +4,14 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import { getServerUrl } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Mail, AlertCircle, CheckCircle } from "lucide-react"
+import { Loader2, AlertCircle, CheckCircle } from "lucide-react"
 import Link from "next/link"
-import { requestPasswordReset } from "@/lib/api"
 import { useToast } from "@/hooks/use-toast"
 
 const forgotPasswordSchema = z.object({
@@ -20,7 +20,6 @@ const forgotPasswordSchema = z.object({
 
 export default function ForgotPassword() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
   const { toast } = useToast()
   const form = useForm<z.infer<typeof forgotPasswordSchema>>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -30,33 +29,45 @@ export default function ForgotPassword() {
   })
 
   const onSubmit = async (values: z.infer<typeof forgotPasswordSchema>) => {
+    console.log("Submitting")
     setIsSubmitting(true)
-    setSubmitStatus("idle")
 
     try {
-      await requestPasswordReset(values.email)
-
-      setSubmitStatus("success")
+      const request = await fetch(`${getServerUrl()}/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: values.email }),
+      })
+      const response = await request.json()
+      if (request.ok) {
+        return toast({
+          title: "Demande de réinitialisation de mot de passe envoyée",
+          description: "Veuillez vérifier votre boîte mail",
+          variant: "default",
+        })
+      }
       toast({
-        title: "Demande de réinitialisation de mot de passe envoyée",
-        description: "Veuillez vérifier votre boîte mail",
-        variant: "default",
+        title: "Erreur lors de la demande de réinitialisation de mot de passe",
+        description: `${response.message}` || "Veuillez réessayer plus tard",
+        variant: "destructive",
       })
     } catch (error) {
-     
+      console.log(error)
+
       toast({
         title: "Erreur lors de la demande de réinitialisation de mot de passe",
         description: "Veuillez réessayer plus tard",
         variant: "destructive",
       })
-      setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center bg-gradient-to-br from-second/40 via-transparent to-first/40 w-full min-h-full h-fit py-10 px-5 gap-10">
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">Mot de passe oublié</CardTitle>
@@ -79,12 +90,12 @@ export default function ForgotPassword() {
               />
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full bg-first hover:bg-first/90"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
                   <>
-                    <Mail className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Envoi...
                   </>
                 ) : (
@@ -93,24 +104,7 @@ export default function ForgotPassword() {
               </Button>
             </form>
           </Form>
-          {submitStatus === "success" && (
-            <Alert className="mt-4" variant="default">
-              <CheckCircle className="h-4 w-4" />
-              <AlertTitle>Succès</AlertTitle>
-              <AlertDescription>
-                Si un compte existe pour cet email, nous avons envoyé les instructions de réinitialisation du mot de passe.
-              </AlertDescription>
-            </Alert>
-          )}
-          {submitStatus === "error" && (
-            <Alert className="mt-4" variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Erreur</AlertTitle>
-              <AlertDescription>
-                Une erreur est survenue. Veuillez réessayer plus tard.
-              </AlertDescription>
-            </Alert>
-          )}
+
         </CardContent>
         <CardFooter className="flex justify-center">
           <Link href="/sign-in" className="text-sm text-gray-600 hover:underline">

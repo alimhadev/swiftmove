@@ -10,8 +10,10 @@ import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import swiftmoveLogo from "@/public/assets/swiftmove-logo.png";
+import { useAppContext } from "@/hooks/appProvider";
 
 const Header = () => {
+    const { user } = useAppContext();
     const [toggleMenu, setToggleMenu] = useState(false);
     const localActive = useLocale();
     const t = useTranslations("SwiftMovePage.Header");
@@ -50,9 +52,11 @@ const Header = () => {
 
     // Redirects to sign-in
     const redirectsToSignIn = () => {
-        const url = `/${localActive}/sign-in`;
-        // router.replace(url);
-        window.open(url, "_blank");
+        if (user) {
+            router.push(`/${localActive}/dashboard`);
+        } else {
+            router.push(`/${localActive}/sign-in`);
+        }
     };
 
     const scrollToSection = (e: any, id: string) => {
@@ -106,7 +110,7 @@ const Header = () => {
                             onClick={redirectsToSignIn}
                         >
                             <Wallet size={20} color="white" strokeWidth={1.5} />
-                            {t("button2 text")}
+                            {user ? t("button3 text") : t("button2 text")}
                         </Button>
                     </div>
                 </div>
@@ -153,7 +157,7 @@ const Header = () => {
                             onClick={redirectsToSignIn}
                         >
                             <Wallet size={20} color="white" strokeWidth={1.5} />
-                            {t("button2 text")}
+                            {user ? t("button3 text") : t("button2 text")}
                         </Button>
                     </div>
                 </motion.div>

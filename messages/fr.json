@@ -8,7 +8,8 @@
                 "link4": "Avantages"
             },
             "button1 text": "S'inscrire",
-            "button2 text": "Investir maintenant"
+            "button2 text": "Investir maintenant",
+            "button3 text": "Dashboard"
         },
         "HeroSection": {
             "tag": "Rapide sur la route, rentable dans vos poches",

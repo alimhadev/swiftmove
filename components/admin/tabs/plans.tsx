@@ -34,7 +34,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {     Pencil, Trash2, ArrowLeft } from "lucide-react";
+import { Pencil, Trash2, ArrowLeft } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -59,14 +59,34 @@ import {
 
 const planFormSchema = z.object({
     id: z.number().optional(),
-    name: z.string().min(4, {
+    name: z.string({
+        message: "Veuillez entrer un nom de plan valide de 4 caractères minimum.",
+    }).min(4, {
         message:
             "Veuillez entrer un nom de plan valide de 4 caractères minimum.",
     }),
-    amount: z.number().min(0),
-    incomePercentage: z.number().min(0),
-    durationInMonth: z.number().min(0).default(0),
-    durationInDay: z.number().min(0).default(0),
+    amount: z.number({
+        message: "Veuillez entrer un montant valide.",
+    }).min(0, {
+        message: "Veuillez entrer un montant valide.",
+    }),
+    incomePercentage: z.number({
+        message: "Veuillez entrer un pourcentage valide.",
+    }).min(1, {
+        message: "Veuillez entrer un pourcentage valide.",
+    }).max(100, {
+        message: "Veuillez entrer un pourcentage valide.",
+    }),
+    durationInMonth: z.number({
+        message: "Veuillez entrer une durée valide.",
+    }).min(1, {
+        message: "Veuillez entrer une durée valide.",
+    }).default(0),
+    durationInDay: z.number({
+        message: "Veuillez entrer une durée valide.",
+    }).min(0, {
+        message: "Veuillez entrer une durée valide.",
+    }).default(0),
     minimumWithdrawalAmount: z.number().min(0),
     vehicleId: z.string().min(1, {
         message: "Veuillez sélectionner un véhicule.",
@@ -78,7 +98,7 @@ const planFormSchema = z.object({
 type PlanFormValues = z.infer<typeof planFormSchema>;
 
 export default function Plans() {
-    const {toast} = useToast();
+    const { toast } = useToast();
     const queryClient = useQueryClient();
     const [editingPlan, setEditingPlan] = useState<PlanFormValues | null>(null);
     const { data: vehicles, isLoading } = useQuery({
@@ -100,6 +120,15 @@ export default function Plans() {
                 description: "Le plan a été créé avec succès",
                 variant: "default"
             });
+
+        },
+        onError: (error: any) => {
+
+            toast({
+                title: "Erreur lors de la création du plan",
+                description: "Veuillez réessayer plus tard",
+                variant: "destructive",
+            });
         },
     });
 
@@ -113,6 +142,13 @@ export default function Plans() {
                 description: "Le plan a été modifié avec succès",
             });
         },
+        onError: (error: any) => {
+            toast({
+                title: "Erreur lors de la modification du plan",
+                description: error.message || "Veuillez réessayer plus tard",
+                variant: "destructive",
+            });
+        },
     });
     const deleteInvestmentPlanMutation = useMutation({
         mutationFn: deleteInvestmentPlan,
@@ -124,7 +160,7 @@ export default function Plans() {
             });
         },
     });
-
+    console.log(investmentPlans)
     const planForm = useForm<PlanFormValues>({
         resolver: zodResolver(planFormSchema),
         defaultValues: {
@@ -142,7 +178,7 @@ export default function Plans() {
         if (editingPlan) {
             await updateInvestmentPlanMutation.mutateAsync({
                 ...values,
-                id: editingPlan.id,
+                id: editingPlan.id!,
             });
         } else {
             await createInvestmentPlanMutation.mutateAsync(values);
@@ -250,7 +286,7 @@ export default function Plans() {
                                             />
                                         </FormControl>
                                         <FormDescription>
-                                            Pourcentage de retour
+                                            Pourcentage de retour (1 à 100)
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -408,7 +444,8 @@ export default function Plans() {
                             {investmentPlans?.map((plan) => (
                                 <TableRow key={plan.id}>
                                     <TableCell>{plan.name}</TableCell>
-                                    <TableCell>{plan.amount}</TableCell>
+                                    {/* @ts-ignore */}
+                                    <TableCell>{parseFloat(plan.amount as string).toFixed(0)}</TableCell>
                                     <TableCell>
                                         {plan.incomePercentage}%
                                     </TableCell>
@@ -474,7 +511,7 @@ export default function Plans() {
                                                         onClick={() =>
                                                             deleteInvestmentPlanMutation.mutateAsync(
                                                                 plan.id?.toString() ||
-                                                                    ""
+                                                                ""
                                                             )
                                                         }
                                                     >

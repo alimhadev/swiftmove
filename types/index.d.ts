@@ -23,7 +23,7 @@ type User = {
     totalInvestments: number;
 }
 type InvestmentPlan = {
-    id?: number;
+    id: number;
     name: string;
     amount: number;
     incomePercentage: number;

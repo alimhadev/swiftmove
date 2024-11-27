@@ -11,8 +11,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Lock, AlertCircle, CheckCircle } from "lucide-react"
 import Link from "next/link"
-import { resetPassword } from "@/lib/api"
+import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
+import { getServerUrl } from "@/lib/utils"
 const resetPasswordSchema = z.object({
   password: z
     .string()
@@ -25,7 +26,7 @@ const resetPasswordSchema = z.object({
 
 export default function ResetPassword({ token, email }: { token: string, email: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const { toast } = useToast()
 
   const router = useRouter()
 
@@ -39,17 +40,40 @@ export default function ResetPassword({ token, email }: { token: string, email: 
 
   const onSubmit = async (values: z.infer<typeof resetPasswordSchema>) => {
     setIsSubmitting(true)
-    setSubmitStatus("idle")
 
     try {
+      const request = await fetch(`${getServerUrl()}/reset-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password: values.password, token: token, email: email }),
+      })
+      if (request.ok) {
+        toast({
+          title: "Mot de passe réinitialisé",
+          description: "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+          variant: "default",
+        })
+        router.push("/sign-in")
+        return
+      } else {
+        const response = await request.json()
+        return toast({
+          title: "Erreur lors de la réinitialisation de mot de passe",
+          description: response.message || "Veuillez réessayer plus tard",
+          variant: "destructive",
+        })
 
-      await resetPassword({ password: values.password, token: token, email: email })
+      }
 
-      setSubmitStatus("success")
 
-      router.push("/sign-in")
     } catch (error) {
-      setSubmitStatus("error")
+      toast({
+        title: "Erreur lors de la réinitialisation de mot de passe",
+        description: "Veuillez réessayer plus tard",
+        variant: "destructive",
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -108,24 +132,8 @@ export default function ResetPassword({ token, email }: { token: string, email: 
               </Button>
             </form>
           </Form>
-          {submitStatus === "success" && (
-            <Alert className="mt-4" variant="default">
-              <CheckCircle className="h-4 w-4" />
-              <AlertTitle>Success</AlertTitle>
-              <AlertDescription>
-                Votre mot de passe a bien été réinitialisé. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.
-              </AlertDescription>
-            </Alert>
-          )}
-          {submitStatus === "error" && (
-            <Alert className="mt-4" variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                Une erreur est survenue lors de la réinitialisation de votre mot de passe. Veuillez réessayer plus tard.
-              </AlertDescription>
-            </Alert>
-          )}
+
+
         </CardContent>
         <CardFooter className="flex justify-center">
           <Link href="/sign-in" className="text-sm text-gray-600 hover:underline">

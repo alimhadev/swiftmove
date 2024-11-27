@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-export const NavItems = ( {setActiveTab, activeTab}:{setActiveTab: React.Dispatch<React.SetStateAction<string>>, activeTab: string}) => (
+export const NavItems = ( {setActiveTab, activeTab, isSuperAdmin}:{setActiveTab: React.Dispatch<React.SetStateAction<string>>, activeTab: string, isSuperAdmin: boolean}) => (
     <>
         <Link
             href="#"
@@ -28,14 +28,16 @@ export const NavItems = ( {setActiveTab, activeTab}:{setActiveTab: React.Dispatc
             Investisseurs
         </Link>
         <Separator />
-        <Link
-            href="#"
-            onClick={() => setActiveTab("admins")}
+        {isSuperAdmin && (
+            <Link
+                href="#"
+                onClick={() => setActiveTab("admins")}
             className={`flex items-center px-4 py-3 ${activeTab === "admins" ? "bg-gray-200" : ""}`}
         >
             <Users className="mr-3 h-5 w-5" />
-            Admins
-        </Link>
+                Admins
+            </Link>
+        )}
         <Separator />
         <Link
             href="#"

@@ -9,19 +9,25 @@ import {
 } from "@/components/ui/card"
 import { Button } from '@/components/ui/button'
 import { Progress } from "@/components/ui/progress"
-import { getInvestmentPlans, subscribeToPlan } from '@/lib/api'
+import { getInvestmentPlans, subscribeToPlan, getUserActivePlans } from '@/lib/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useToast } from "@/hooks/use-toast"
+import { CheckCircle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { calculateProgress } from '@/lib/utils'
 
 const Investments = () => {
+    const router = useRouter()
     const { toast } = useToast()
     const { data: investmentPlans, isLoading: isLoadingInvestmentPlans } = useQuery({ queryKey: ['investmentPlans'], queryFn: getInvestmentPlans })
+    const { data: userActivePlans, } = useQuery({ queryKey: ['userActivePlans'], queryFn: getUserActivePlans })
     const queryClient = useQueryClient()
     const subscribeMutation = useMutation({
         mutationFn: subscribeToPlan,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['investmentPlans'] })
-            // TODO: invalidate user query
+            queryClient.invalidateQueries({ queryKey: ['userActivePlans'] })
+            router.refresh()
             toast({
                 title: "Souscription effectuée",
                 description: "Vous êtes maintenant inscrit à ce plan d'investissement",
@@ -36,6 +42,11 @@ const Investments = () => {
             })
         },
     })
+
+    const isPlanActive = (planId: number) => {
+        return userActivePlans?.some(activePlan => activePlan.id === planId) ?? false
+    }
+
 
     const renderContent = () => {
         if (isLoadingInvestmentPlans) {
@@ -60,40 +71,49 @@ const Investments = () => {
 
         return (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {investmentPlans.map((plan) => (
-                    <Card key={plan.id}>
-                        <CardHeader>
-                            <CardTitle>{plan.name} | {plan.vehicle?.name}</CardTitle>
-                            <CardDescription>
-                                Capital: {plan.amount} FCFA |
-                                Rendement Total: {plan.incomePercentage}% <br />
-                                Rendement quotidien: {(plan.incomePercentage / (plan.durationInMonth * 26)).toFixed(2)}%
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <p>Durée: {plan.durationInMonth} mois</p>
-                            <p>Retrait: {plan.minimumWithdrawalAmount} FCFA</p>
-                            {
-                                /**
-                                 *   <div className="space-y-2">
-                                     <div className="flex justify-between text-sm">
-                                        <span>Progression</span>
-                                        <span>{plan.progress}%</span>
-                                    </div> 
-                                    <Progress value={plan.created_at} className="w-full" />
+                {investmentPlans.map((plan) => {
+                    const isActive = isPlanActive(plan.id!)
+                    return (
+                        <Card key={plan.id} className={isActive ? "border-primary" : ""}>
+                            <CardHeader>
+                                <div className="flex justify-between items-start">
+                                    <CardTitle>{plan.name} | {plan.vehicle?.name}</CardTitle>
+                                    {isActive && <CheckCircle className="text-primary" />}
                                 </div>
-                                 */
-                            }
-                        </CardContent>
-                        <CardFooter>
-                            <Button onClick={async () => await subscribeMutation.mutateAsync({ investmentPlanId: plan.id! })}>
-                                Souscrire
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                ))
-                }
-            </div >
+                                <CardDescription>
+                                    Capital: {plan.amount} FCFA |
+                                    Rendement Total: {plan.incomePercentage}% <br />
+                                    Rendement quotidien: {(plan.incomePercentage / (plan.durationInMonth * 26)).toFixed(2)}%
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <p>Durée: {plan.durationInMonth} mois</p>
+                                <p>Retrait: {plan.minimumWithdrawalAmount} FCFA</p>
+                                {isActive && (
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between text-sm">
+                                            <span>Progression</span>
+                                            {/* @ts-ignore */}
+                                            <span>{calculateProgress(userActivePlans?.find(usrPlan => usrPlan.id === plan.id)?.createdAt, plan.durationInMonth)}%</span>
+                                        </div>
+                                        {/* @ts-ignore */}
+                                        <Progress value={calculateProgress(userActivePlans?.find(usrPlan => usrPlan.id === plan.id)?.createdAt, plan.durationInMonth)} className="w-full" />
+                                    </div>
+                                )}
+                            </CardContent>
+                            <CardFooter>
+                                <Button
+                                    onClick={async () => await subscribeMutation.mutateAsync({ investmentPlanId: plan.id })}
+                                    disabled={isActive}
+                                    variant={isActive ? "outline" : "default"}
+                                >
+                                    {isActive ? "Souscrit" : "Souscrire"}
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    )
+                })}
+            </div>
         )
     }
 

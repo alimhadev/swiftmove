@@ -206,15 +206,12 @@ const Transactions = () => {
                                         <FormItem>
                                             <FormLabel>Montant</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Montant" {...field} onChange={(e) => {
+                                                <Input type='number' placeholder="Montant" {...field} onChange={(e) => {
                                                     if (/^\d*$/.test(e.target.value)) {
                                                         field.onChange(parseInt(e.target.value))
                                                     }
                                                 }} />
                                             </FormControl>
-                                            <FormDescription>
-                                                Montant du plan
-                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -246,9 +243,6 @@ const Transactions = () => {
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
-                                            <FormDescription>
-                                                Réseau de dépôt
-                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -279,9 +273,6 @@ const Transactions = () => {
                                                     }}
                                                 />
                                             </FormControl>
-                                            <FormDescription>
-                                                Une capture d'écran de la confirmation de votre dépôt
-                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -310,15 +301,13 @@ const Transactions = () => {
                                         <FormItem>
                                             <FormLabel>Montant</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Montant" {...field} onChange={(e) => {
+                                                <Input type='number' placeholder="Montant" {...field} onChange={(e) => {
                                                     if (/^\d*$/.test(e.target.value)) {
+
                                                         field.onChange(parseInt(e.target.value))
                                                     }
                                                 }} />
                                             </FormControl>
-                                            <FormDescription>
-                                                Montant du plan
-                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -348,9 +337,6 @@ const Transactions = () => {
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
-                                            <FormDescription>
-                                                Réseau de retrait
-                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -369,9 +355,6 @@ const Transactions = () => {
                                                     }
                                                 }} />
                                             </FormControl>
-                                            <FormDescription>
-                                                Une capture d'écran de la confirmation de votre dépôt
-                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}

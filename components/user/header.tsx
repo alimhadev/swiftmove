@@ -15,9 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, LogOut, Menu, User } from 'lucide-react';
 import Link from 'next/link';
 import LogoutButton from '../dashboard/logout-button';
-import { useAppContext } from '@/hooks/appProvider';
-const Header = ({ setActiveTab, activeTab }: { setActiveTab: React.Dispatch<React.SetStateAction<string>>, activeTab: string, }) => {
-    const { user } = useAppContext();
+const Header = ({ setActiveTab, activeTab, user }: { setActiveTab: React.Dispatch<React.SetStateAction<string>>, activeTab: string, user: User }) => {
     const notifications = [
         { id: 1, message: "Nouveau rendement disponible", date: "2024-03-11" },
         { id: 2, message: "Mise à jour de votre plan", date: "2024-03-10" },
@@ -87,7 +85,7 @@ const Header = ({ setActiveTab, activeTab }: { setActiveTab: React.Dispatch<Reac
                             <Avatar>
                                 <AvatarImage
                                     src=""
-                                    alt="@shadcn"
+                                    alt="avatar"
                                 />
                                 <AvatarFallback>
                                     <User className="h-4 w-4" />

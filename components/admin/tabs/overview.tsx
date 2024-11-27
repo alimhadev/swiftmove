@@ -10,23 +10,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useQuery } from '@tanstack/react-query';
 import { getDepositRequests, getTotalInvestments, getUsers, getWithdrawalRequests } from '@/lib/api';
 
-interface Deposit {
-    id: number;
-    amount: string;
-    method: string;
-    userId: number;
-    createdAt: string;
-    user: { name: string };
-}
-
-interface Withdrawal {
-    id: number;
-    amount: string;
-    method: string;
-    userId: number;
-    createdAt: string;
-    user: { name: string };
-}
 
 const Overview = () => {
     const { data: totalInvestments } = useQuery({ queryKey: ['totalInvestments'], queryFn: getTotalInvestments })

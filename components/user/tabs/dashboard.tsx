@@ -1,6 +1,6 @@
 'use client'
-
-import React, { useState } from 'react'
+import { calculateProgress } from '@/lib/utils'
+import React from 'react'
 import {
     Card,
     CardContent,
@@ -16,9 +16,8 @@ import {
     RefreshCw,
 } from "lucide-react"
 import { Button } from '@/components/ui/button'
-import { useAppContext } from '@/hooks/appProvider'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { userIncrease, getUserActivePlans, subscribeToPlan } from '@/lib/api'
+import { userIncrease, getUserActivePlans, subscribeToPlan, getInvestmentPlans } from '@/lib/api'
 import {
     Dialog,
     DialogContent,
@@ -28,6 +27,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { useToast } from "@/hooks/use-toast"
+import { Progress } from "@/components/ui/progress"
 
 
 type Plan = {
@@ -77,11 +77,11 @@ const PlanDetailsDialog = ({ plan }: { plan: Plan }) => (
     </Dialog>
 )
 
-const Dashboard = ({ setActiveTab, }: { setActiveTab: React.Dispatch<React.SetStateAction<string>> }) => {
-    const { user } = useAppContext()
+const Dashboard = ({ setActiveTab, user }: { setActiveTab: React.Dispatch<React.SetStateAction<string>>, user: User }) => {
     const { toast } = useToast()
     const { data: userIncreases } = useQuery({ queryKey: ['increase'], queryFn: userIncrease })
     const { data: userActivePlans, } = useQuery({ queryKey: ['userActivePlans'], queryFn: getUserActivePlans })
+    const { data: investmentPlans, isLoading: isLoadingInvestmentPlans } = useQuery({ queryKey: ['investmentPlans'], queryFn: getInvestmentPlans })
     const queryClient = useQueryClient()
     const subscribeMutation = useMutation({
         mutationFn: subscribeToPlan,
@@ -94,7 +94,7 @@ const Dashboard = ({ setActiveTab, }: { setActiveTab: React.Dispatch<React.SetSt
                 variant: "default",
             })
         },
-        onError(error, variables, context) {
+        onError(error) {
             toast({
                 title: "Erreur lors de la souscription",
                 description: error.message,
@@ -182,32 +182,44 @@ const Dashboard = ({ setActiveTab, }: { setActiveTab: React.Dispatch<React.SetSt
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {userActivePlans?.map((plan) => (
-                            <Card key={plan.id}>
-                                <CardHeader>
-                                    <CardTitle>{plan.investmentPlan.name} | {plan.investmentPlan.vehicle?.name}</CardTitle>
-                                    <CardDescription>
-                                        Capital: {plan.investmentPlan.amount} FCFA |
-                                        Rendement Total: {plan.investmentPlan.incomePercentage}% <br />
-                                        Rendement quotidien: {(plan.investmentPlan.incomePercentage / (plan.investmentPlan.durationInMonth * 26)).toFixed(2)}%
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <p>
-                                        État : {plan.state === "active" ? "Actif" : "Inactif"}
-                                    </p>
-                                </CardContent>
-                                <CardFooter>
-                                    {plan.state === "active" ? (
-                                        <PlanDetailsDialog plan={plan} />
-                                    ) : (
-                                        <Button onClick={async () => await subscribeMutation.mutateAsync({ investmentPlanId: plan.investmentPlanId })}>
-                                            Réactiver
-                                        </Button>
-                                    )}
-                                </CardFooter>
-                            </Card>
-                        ))}
+                        {userActivePlans?.map((plan) => {
+                            const progress = calculateProgress(plan.createdAt, plan.investmentPlan.durationInMonth);
+                            return (
+                                <Card key={plan.id}>
+                                    <CardHeader>
+                                        <CardTitle>{plan.investmentPlan.name} | {plan.investmentPlan.vehicle?.name}</CardTitle>
+                                        <CardDescription>
+                                            Capital: {plan.investmentPlan.amount} FCFA |
+                                            Rendement Total: {plan.investmentPlan.incomePercentage}% <br />
+                                            Rendement quotidien: {(plan.investmentPlan.incomePercentage / (plan.investmentPlan.durationInMonth * 26)).toFixed(2)}%
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p>
+                                            État : {plan.state === "active" ? "Actif" : "Inactif"}
+                                        </p>
+                                        {plan.state === "active" && (
+                                            <div className="space-y-2">
+                                                <div className="flex justify-between text-sm">
+                                                    <span>Progression</span>
+                                                    <span>{progress}%</span>
+                                                </div>
+                                                <Progress value={progress} className="w-full" />
+                                            </div>
+                                        )}
+                                    </CardContent>
+                                    <CardFooter>
+                                        {plan.state === "active" ? (
+                                            <PlanDetailsDialog plan={plan} />
+                                        ) : (
+                                            <Button onClick={async () => await subscribeMutation.mutateAsync({ investmentPlanId: plan.investmentPlanId })}>
+                                                Réactiver
+                                            </Button>
+                                        )}
+                                    </CardFooter>
+                                </Card>
+                            )
+                        })}
                     </div>
                 </CardContent>
             </Card>

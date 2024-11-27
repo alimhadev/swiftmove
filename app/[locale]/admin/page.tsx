@@ -1,16 +1,19 @@
 import AdminDashboard from "@/components/dashboard/admin-view";
-import { checkSession, } from "@/lib/session";
+import { getUser, } from "@/lib/session";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 export default async function page() {
 
-    const session = await checkSession()
-    console.log(session)
-    if (!session.isAdmin && !session.isSuperAdmin) {
+    const user = await getUser()
+    if (!user) {
+        return redirect('/sign-in')
+    }
+    console.log(user)
+    if (!user.isAdmin && !user.isSuperAdmin) {
         return redirect('/dashboard')
     }
     return (
-        <AdminDashboard />
+        <AdminDashboard user={user} />
     );
 }
 
